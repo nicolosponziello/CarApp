@@ -13,6 +13,9 @@
     <string name="timelimit_label">Scadenza</string>
     <string name="navigate_btn">Portami!</string>
 
+    <!-- Titles -->
+    <string name="settings_activity_title">Impostazioni</string>
+
     <!-- toolbar -->
     <string name="menu_about">About</string>
     <string name="menu_settings">Impostazioni</string>

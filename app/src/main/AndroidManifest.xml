@@ -24,7 +24,8 @@
         <activity android:name=".intro.IntroActivity">
 
         </activity>
-        <activity android:name=".activity.SettingsActivity">
+        <activity android:name=".activity.SettingsActivity"
+            android:label="@string/settings_activity_title">
 
         </activity>
         <activity android:name=".activity.AboutActivity">
