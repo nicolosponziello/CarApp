@@ -11,6 +11,21 @@
     <string name="cost_label">Costo</string>
     <string name="cost_input">costo</string>
     <string name="timelimit_label">Scadenza</string>
+    <string name="navigate_btn">Portami!</string>
 
+    <!-- toolbar -->
+    <string name="menu_about">About</string>
     <string name="menu_settings">Impostazioni</string>
+
+
+    <!-- shared prefs -->
+    <string name="shared_prefs">shared1</string>
+    <string name="intro_shown">introshown</string>
+
+    <!-- Preferences -->
+    <string name="show_intro_settings_title">Mostra intro</string>
+    <string name="show_intro_settings_desc">Mostra intro all avvio dell applicazione</string>
+
+    <string name="notif_time_settings_title">Notifica di scandenza del parcheggio</string>
+
 </resources>
