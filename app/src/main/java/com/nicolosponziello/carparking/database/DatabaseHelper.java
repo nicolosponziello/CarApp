@@ -14,7 +14,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(DatabaseQuery.CREATE_TABLE.getQuery());
+        String query = "create table " + DatabaseConsts.TABLE_NAME +
+                " ( _id integer primary key autoincrement," +
+                DatabaseConsts.FIELD_ACTIVE + " bool," +
+                DatabaseConsts.FIELD_CITY + " text," +
+                DatabaseConsts.FIELD_LONG + " text," +
+                DatabaseConsts.FIELD_LAT + " text," +
+                DatabaseConsts.FIELD_COST + " text," +
+                DatabaseConsts.FIELD_EXP + " text," +
+                DatabaseConsts.FIELD_PHOTO + " byte," +
+                DatabaseConsts.FIELD_NOTE + " text," +
+                DatabaseConsts.FIELD_LEVEL + " text," +
+                DatabaseConsts.FIELD_SPOT + " text," +
+                DatabaseConsts.FIELD_ADDRESS + " text" +
+                ")";
+        db.execSQL(query);
     }
 
     @Override

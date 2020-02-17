@@ -2,9 +2,14 @@ package com.nicolosponziello.carparking.model;
 
 import android.media.Image;
 
-public class NewParkingData {
+import java.sql.Blob;
+import java.time.LocalDateTime;
+import java.util.Date;
+
+public class ParkingData {
 
     private String address;
+    private boolean active;
     private String longitude;
     private String latitude;
     private String parkSpot;
@@ -12,9 +17,12 @@ public class NewParkingData {
     private String note;
     private Parkimeter parkimeter;
     private Image image;
+    private String city;
+    private byte[] photoBlob;
+    private String date;
+    private long id;
 
-    public NewParkingData(){
-
+    public ParkingData(){
     }
 
     public String getAddress() {
@@ -49,6 +57,26 @@ public class NewParkingData {
         return image;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public byte[] getPhotoBlob() {
+        return photoBlob;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public long getId() {
+        return id;
+    }
+
     public void setAddress(String address) {
         this.address = address;
     }
@@ -79,5 +107,25 @@ public class NewParkingData {
 
     public void setImage(Image image) {
         this.image = image;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setPhotoBlob(byte[] photoBlob) {
+        this.photoBlob = photoBlob;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

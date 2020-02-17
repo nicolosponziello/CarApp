@@ -1,16 +1,17 @@
 package com.nicolosponziello.carparking.model;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Parkimeter {
     private Float cost;
-    private LocalDateTime exipiration;
+    private String exipiration;
 
 
     public Parkimeter(){
 
     }
-    public Parkimeter(Float cost, LocalDateTime exipiration){
+    public Parkimeter(Float cost, String exipiration){
         this.cost = cost;
         this.exipiration = exipiration;
     }
@@ -19,7 +20,7 @@ public class Parkimeter {
         return cost;
     }
 
-    public LocalDateTime getExipiration() {
+    public String getExipiration() {
         return exipiration;
     }
 
@@ -27,7 +28,7 @@ public class Parkimeter {
         this.cost = cost;
     }
 
-    public void setExipiration(LocalDateTime exipiration) {
-        this.exipiration = exipiration;
+    public void setExipiration(String date) {
+        this.exipiration = date;
     }
 }

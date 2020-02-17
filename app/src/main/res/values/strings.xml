@@ -13,6 +13,9 @@
     <string name="timelimit_label">Scadenza</string>
     <string name="navigate_btn">Portami!</string>
 
+    <!-- Current parking card -->
+    <string name="current_parking_title">Ultimo parcheggio</string>
+
     <!-- Titles -->
     <string name="settings_activity_title">Impostazioni</string>
 
