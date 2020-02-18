@@ -3,36 +3,44 @@ package com.nicolosponziello.carparking.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import com.nicolosponziello.carparking.database.DatabaseSchema.ParkTable;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "database.db";
+    public static final String DATABASE_NAME = "database.db";
+    private Context context;
     private static final int DATABASE_VERSION = 1;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String query = "create table " + DatabaseConsts.TABLE_NAME +
+        String query = "create table " + ParkTable.TABLE_NAME +
                 " ( _id integer primary key autoincrement," +
-                DatabaseConsts.FIELD_ACTIVE + " bool," +
-                DatabaseConsts.FIELD_CITY + " text," +
-                DatabaseConsts.FIELD_LONG + " text," +
-                DatabaseConsts.FIELD_LAT + " text," +
-                DatabaseConsts.FIELD_COST + " text," +
-                DatabaseConsts.FIELD_EXP + " text," +
-                DatabaseConsts.FIELD_PHOTO + " byte," +
-                DatabaseConsts.FIELD_NOTE + " text," +
-                DatabaseConsts.FIELD_LEVEL + " text," +
-                DatabaseConsts.FIELD_SPOT + " text," +
-                DatabaseConsts.FIELD_ADDRESS + " text" +
-                ")";
+                ParkTable.Cols.FIELD_ACTIVE + ", " +
+                ParkTable.Cols.FIELD_UUID + ", " +
+                ParkTable.Cols.FIELD_CITY + ", " +
+                ParkTable.Cols.FIELD_LONG + ", " +
+                ParkTable.Cols.FIELD_LAT + ", " +
+                ParkTable.Cols.FIELD_COST + ", " +
+                ParkTable.Cols.FIELD_EXP + ", " +
+                ParkTable.Cols.FIELD_PHOTO + ", " +
+                ParkTable.Cols.FIELD_NOTE + ", " +
+                ParkTable.Cols.FIELD_LEVEL + ", " +
+                ParkTable.Cols.FIELD_SPOT + ", " +
+                ParkTable.Cols.FIELD_DATE + ", " +
+                ParkTable.Cols.FIELD_ADDRESS + ")";
         db.execSQL(query);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+
+    public static void deleteDatabase(Context context){
+        context.deleteDatabase(DATABASE_NAME);
     }
 }

@@ -1,26 +1,31 @@
 package com.nicolosponziello.carparking.activity;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
+import android.provider.Settings;
 import android.util.Log;
-import android.widget.FrameLayout;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.nicolosponziello.carparking.R;
 import com.nicolosponziello.carparking.fragments.NewParkFragment;
+import com.nicolosponziello.carparking.model.ParkManager;
 
 public class NewParkActivity extends AppCompatActivity {
 
@@ -39,54 +44,92 @@ public class NewParkActivity extends AppCompatActivity {
         setContentView(R.layout.new_park_activity);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-
+        locationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         /*
         check if app has permission for location services.
         if not, ask user for them
          */
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
-            Log.e("CarParking", "INTERNET permission not granted");
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, INTERNET_PERMISSION);
-        }
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Log.e("CarParking", "COARSE LOCATION permission not granted");
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, COARSE_LOCATION_PERMISSION);
-        }
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Log.e("CarParking", "FINE LOCATION permission not granted");
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, FINE_LOCATION_PERMISSION);
-        }
+        if(!hasPermissions()){
+            requestPermissions();
+        }else{
+            if(isLocationEnabled()){
+                Task<Location> locationTask = locationProviderClient.getLastLocation();
+                locationTask.addOnSuccessListener(this, new OnSuccessListener<Location>() {
 
-        LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
-        locationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        Task<Location> locationTask = locationProviderClient.getLastLocation();
-        locationTask.addOnSuccessListener(this, new OnSuccessListener<Location>() {
-
-            @Override
-            public void onSuccess(Location location) {
-                if(location != null){
-                    Log.d("CarParking", String.valueOf(location.getLatitude() + " " + location.getLongitude()));
-                    Bundle bundle = new Bundle();
-                    bundle.putString(BUNDLE_LAT, String.valueOf(location.getLatitude()));
-                    bundle.putString(BUNDLE_LONG, String.valueOf(location.getLongitude()));
-                    Fragment newParkFragment = new NewParkFragment();
-                    newParkFragment.setArguments(bundle);
-                    fragmentManager.beginTransaction().add(R.id.frame, newParkFragment).commit();
-                }else{
-                    Log.d("CarParking", "Location null");
-                }
+                    @Override
+                    public void onSuccess(Location location) {
+                        if(location != null){
+                            Log.d("CarParking", String.valueOf(location.getLatitude() + " " + location.getLongitude()));
+                            Bundle bundle = new Bundle();
+                            bundle.putString(BUNDLE_LAT, String.valueOf(location.getLatitude()));
+                            bundle.putString(BUNDLE_LONG, String.valueOf(location.getLongitude()));
+                            Fragment newParkFragment = new NewParkFragment();
+                            newParkFragment.setArguments(bundle);
+                            fragmentManager.beginTransaction().add(R.id.frame, newParkFragment).commit();
+                        }else{
+                            requestNewLocation();
+                        }
+                    }
+                });
+            }else{
+                //ask user to enable location in settings
+                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
             }
-        });
-        locationTask.addOnFailureListener(this, (location) -> {
-            Log.d("CarParking", "location failed");
-        });
+        }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == FINE_LOCATION_PERMISSION){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //we have the best permission for localization
+                Log.d(getClass().getSimpleName(), "Location permissions granted");
+            }
+        }
     }
+
+    private boolean isLocationEnabled(){
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    }
+
+    private boolean hasPermissions(){
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            return true;
+        }
+        return false;
+    }
+
+    private void requestPermissions(){
+        //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, INTERNET_PERMISSION);
+        //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, COARSE_LOCATION_PERMISSION);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, FINE_LOCATION_PERMISSION);
+    }
+
+    private void requestNewLocation(){
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(0);
+        locationRequest.setNumUpdates(1);
+        locationRequest.setFastestInterval(0);
+
+        locationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+    }
+
+    private LocationCallback locationCallback = new LocationCallback() {
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            Location location = locationResult.getLastLocation();
+            Bundle bundle = new Bundle();
+            bundle.putString(BUNDLE_LAT, String.valueOf(location.getLatitude()));
+            bundle.putString(BUNDLE_LONG, String.valueOf(location.getLongitude()));
+            Fragment newParkFragment = new NewParkFragment();
+            newParkFragment.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction().add(R.id.frame, newParkFragment).commit();
+        }
+    };
 }

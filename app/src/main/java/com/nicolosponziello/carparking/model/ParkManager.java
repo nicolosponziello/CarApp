@@ -1,12 +1,18 @@
 package com.nicolosponziello.carparking.model;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import com.nicolosponziello.carparking.database.DatabaseConsts;
+import android.util.Log;
+
+import com.nicolosponziello.carparking.database.CustomCursorWrapper;
 import com.nicolosponziello.carparking.database.DatabaseHelper;
+import com.nicolosponziello.carparking.database.DatabaseSchema;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class ParkManager {
 
@@ -15,13 +21,18 @@ public class ParkManager {
     private List<ParkingData> parkingData;
     private ParkingData currentParking;
     private DatabaseHelper dbHelper;
+    private SQLiteDatabase database;
     private Context context;
 
 
-    private ParkManager(Context context){
-        this.parkingData = new ArrayList<>();
-        this.dbHelper = new DatabaseHelper(context);
-        this.context = context;
+    private ParkManager(Context c){
+        this.dbHelper = new DatabaseHelper(c);
+        this.context = c.getApplicationContext();
+        database = dbHelper.getWritableDatabase();
+        this.parkingData = getParkingData();
+        this.currentParking = getCurrentParkingFromDB();
+
+        Log.d("ParkManager", "Instatiatin data " + parkingData.size());
     }
 
     public static ParkManager getInstance(Context context) {
@@ -31,48 +42,16 @@ public class ParkManager {
         return instance;
     }
 
-    public void init(){
-        // read database to search for latest parking data
-        // and parse
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query(DatabaseConsts.TABLE_NAME, null, null, null, null, null, null, null);
-        List<ParkingData> tempData = new ArrayList<>();
-        while(cursor.moveToNext()){
-            long id = cursor.getLong(cursor.getColumnIndex(DatabaseConsts.FIELD_ID));
-            String city = cursor.getString(cursor.getColumnIndex(DatabaseConsts.FIELD_CITY));
-            String lat = cursor.getString(cursor.getColumnIndex(DatabaseConsts.FIELD_LAT));
-            String lon = cursor.getString(cursor.getColumnIndex(DatabaseConsts.FIELD_LONG));
-            String cost = cursor.getString(cursor.getColumnIndex(DatabaseConsts.FIELD_COST));
-            String exp = cursor.getString(cursor.getColumnIndex(DatabaseConsts.FIELD_EXP));
-            boolean active = Boolean.getBoolean(cursor.getString(cursor.getColumnIndex(DatabaseConsts.FIELD_ACTIVE)));
-            byte[] photo = cursor.getBlob(cursor.getColumnIndex(DatabaseConsts.FIELD_PHOTO));
-            String note = cursor.getString(cursor.getColumnIndex(DatabaseConsts.FIELD_NOTE));
-            String level = cursor.getString(cursor.getColumnIndex(DatabaseConsts.FIELD_LEVEL));
-            String spot = cursor.getString(cursor.getColumnIndex(DatabaseConsts.FIELD_SPOT));
-            String address = cursor.getString(cursor.getColumnIndex(DatabaseConsts.FIELD_ADDRESS));
-            String date = cursor.getString(cursor.getColumnIndex(DatabaseConsts.FIELD_DATE));
+    public void addParkingData(ParkingData data){
+        ContentValues values = getContentValues(data);
+        database.insert(DatabaseSchema.ParkTable.TABLE_NAME, null, values);
+    }
 
-            ParkingData newData = new ParkingData();
-            newData.setId(id);
-            newData.setCity(city);
-            newData.setLatitude(lat);
-            newData.setLongitude(lon);
-            newData.getParkimeter().setCost(Float.valueOf(cost));
-            newData.getParkimeter().setExipiration(exp);
-            newData.setPhotoBlob(photo);
-            newData.setNote(note);
-            newData.setParkLevel(level);
-            newData.setParkSpot(spot);
-            newData.setAddress(address);
-            newData.setDate(date);
-            newData.setActive(active);
+    public void updateParking(ParkingData data){
+        String targetUUID = data.getId().toString();
+        ContentValues values = getContentValues(data);
 
-            if(active){
-                this.currentParking = newData;
-            }
-            parkingData.add(newData);
-        }
-        cursor.close();
+        database.update(DatabaseSchema.ParkTable.TABLE_NAME, values, DatabaseSchema.ParkTable.Cols.FIELD_UUID + " = ?", new String[] {targetUUID});
     }
 
     public void setParkingData(List<ParkingData> list){
@@ -80,10 +59,35 @@ public class ParkManager {
     }
 
     public List<ParkingData> getParkingData() {
-        return parkingData;
+        List<ParkingData> tmp = new ArrayList<>();
+        CustomCursorWrapper cursor = queryParking(null, null);
+        try{
+            cursor.moveToFirst();
+            while(!cursor.isAfterLast()){
+                ParkingData data = cursor.getParkingData();
+                if(data.isActive()){
+                    setCurrentParking(data);
+                }
+                tmp.add(data);
+                cursor.moveToNext();
+            }
+        }finally {
+            cursor.close();
+        }
+        return tmp;
+    }
+
+    public ParkingData getParkingData(UUID id){
+        for(ParkingData data : parkingData) {
+            if(data.getId() == id){
+                return data;
+            }
+        }
+        return null;
     }
 
     public void setCurrentParking(ParkingData currentParking) {
+        Log.d("ParkManager", "setCurrentParking");
         this.currentParking = currentParking;
     }
 
@@ -95,4 +99,53 @@ public class ParkManager {
         return this.currentParking != null;
     }
 
+    public File getPhotoFile(ParkingData data){
+        File dir = context.getFilesDir();
+        return new File(dir, data.getPhotoFilename());
+    }
+
+    private static ContentValues getContentValues(ParkingData data) {
+        ContentValues values = new ContentValues();
+        values.put(DatabaseSchema.ParkTable.Cols.FIELD_ACTIVE, data.isActive());
+        values.put(DatabaseSchema.ParkTable.Cols.FIELD_LEVEL, data.getParkLevel());
+        values.put(DatabaseSchema.ParkTable.Cols.FIELD_ADDRESS, data.getAddress());
+        values.put(DatabaseSchema.ParkTable.Cols.FIELD_CITY, data.getCity());
+        values.put(DatabaseSchema.ParkTable.Cols.FIELD_COST, data.getCost());
+        values.put(DatabaseSchema.ParkTable.Cols.FIELD_DATE, data.getDate().toString());
+        values.put(DatabaseSchema.ParkTable.Cols.FIELD_EXP, data.getExpiration());
+        values.put(DatabaseSchema.ParkTable.Cols.FIELD_LAT, data.getLatitude());
+        values.put(DatabaseSchema.ParkTable.Cols.FIELD_LONG, data.getLongitude());
+        values.put(DatabaseSchema.ParkTable.Cols.FIELD_NOTE, data.getNote());
+        values.put(DatabaseSchema.ParkTable.Cols.FIELD_PHOTO, data.getPhotoFilename());
+        values.put(DatabaseSchema.ParkTable.Cols.FIELD_SPOT, data.getParkSpot());
+        values.put(DatabaseSchema.ParkTable.Cols.FIELD_UUID, data.getId().toString());
+
+        return values;
+    }
+
+    private CustomCursorWrapper queryParking(String where, String[] whereArgs){
+        Cursor cursor = database.query(
+                DatabaseSchema.ParkTable.TABLE_NAME,
+                null,
+                where,
+                whereArgs,
+                null,
+                null,
+                null
+        );
+        return new CustomCursorWrapper(cursor);
+    }
+
+    private ParkingData getCurrentParkingFromDB() {
+        CustomCursorWrapper cursorWrapper = queryParking(DatabaseSchema.ParkTable.Cols.FIELD_ACTIVE + " = ?", new String[]{"true"});
+        try {
+            if(cursorWrapper.getCount() == 0){
+                return null;
+            }
+            cursorWrapper.moveToFirst();
+            return cursorWrapper.getParkingData();
+        }finally {
+            cursorWrapper.close();
+        }
+    }
 }

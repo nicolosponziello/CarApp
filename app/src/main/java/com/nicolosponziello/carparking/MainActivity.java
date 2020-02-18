@@ -31,8 +31,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ParkManager.getInstance(this).init();
-
         posFrame = findViewById(R.id.current_pos_fragment);
         bottomBar = findViewById(R.id.bottom_bar_frag);
         toolbar = findViewById(R.id.toolbar);
@@ -49,15 +47,15 @@ public class MainActivity extends AppCompatActivity {
         }));
 
         setSupportActionBar(toolbar);
-        if(ParkManager.getInstance(this).hasActiveParking()){
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().add(R.id.current_pos_fragment, new CurrentParkingFragment()).commit();
-        }else{
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().add(R.id.current_pos_fragment, new NoPosFragment()).commit();
-        }
 
+        setupFragments();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupFragments();
     }
 
     @Override
@@ -78,6 +76,16 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void setupFragments(){
+        if(ParkManager.getInstance(this).hasActiveParking()){
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().add(R.id.current_pos_fragment, new CurrentParkingFragment()).commit();
+        }else{
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().add(R.id.current_pos_fragment, new NoPosFragment()).commit();
         }
     }
 }

@@ -5,6 +5,7 @@ import android.media.Image;
 import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.UUID;
 
 public class ParkingData {
 
@@ -15,22 +16,18 @@ public class ParkingData {
     private String parkSpot;
     private String parkLevel;
     private String note;
-    private Parkimeter parkimeter;
-    private Image image;
+    private float cost;
+    private long expiration;
     private String city;
-    private byte[] photoBlob;
-    private String date;
-    private long id;
+    private String photoName;
+    private Date date; //ms
+    private UUID id;
 
     public ParkingData(){
     }
 
     public String getAddress() {
         return address;
-    }
-
-    public Parkimeter getParkimeter() {
-        return parkimeter;
     }
 
     public String getLatitude() {
@@ -53,10 +50,6 @@ public class ParkingData {
         return parkSpot;
     }
 
-    public Image getImage() {
-        return image;
-    }
-
     public boolean isActive() {
         return active;
     }
@@ -65,16 +58,24 @@ public class ParkingData {
         return city;
     }
 
-    public byte[] getPhotoBlob() {
-        return photoBlob;
+    public String getPhotoFilename() {
+        return "IMG_" + id.toString() + ".jpg";
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public long getId() {
+    public UUID getId() {
         return id;
+    }
+
+    public float getCost() {
+        return cost;
+    }
+
+    public long getExpiration() {
+        return expiration;
     }
 
     public void setAddress(String address) {
@@ -93,20 +94,12 @@ public class ParkingData {
         this.note = note;
     }
 
-    public void setParkimeter(Parkimeter parkimeter) {
-        this.parkimeter = parkimeter;
-    }
-
     public void setParkLevel(String parkLevel) {
         this.parkLevel = parkLevel;
     }
 
     public void setParkSpot(String parkSpot) {
         this.parkSpot = parkSpot;
-    }
-
-    public void setImage(Image image) {
-        this.image = image;
     }
 
     public void setActive(boolean active) {
@@ -117,15 +110,19 @@ public class ParkingData {
         this.city = city;
     }
 
-    public void setPhotoBlob(byte[] photoBlob) {
-        this.photoBlob = photoBlob;
-    }
-
-    public void setId(long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
+    }
+
+    public void setCost(float cost) {
+        this.cost = cost;
+    }
+
+    public void setExpiration(long expiration) {
+        this.expiration = expiration;
     }
 }

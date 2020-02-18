@@ -13,6 +13,13 @@
     <string name="timelimit_label">Scadenza</string>
     <string name="navigate_btn">Portami!</string>
 
+    <string name="add_time_button">Scadenza</string>
+    <string name="time_dialog_title">Scadenza:</string>
+    <string name="ok_dialog">OK</string>
+    <string name="cancel_btn">Annulla</string>
+    <string name="save_btn">Salva</string>
+    <string name="note_label">Note</string>
+
     <!-- Current parking card -->
     <string name="current_parking_title">Ultimo parcheggio</string>
 
@@ -29,8 +36,12 @@
     <string name="intro_shown">introshown</string>
 
     <!-- Preferences -->
+    <string name="show_intro_key">show_intro</string>
     <string name="show_intro_settings_title">Mostra intro</string>
     <string name="show_intro_settings_desc">Mostra intro all avvio dell applicazione</string>
+    <string name="delete_db_key">delete_db</string>
+    <string name="delete_db_title">Cancella Database</string>
+    <string name="delete_db_desc">Attenzione! Operazione irrimediabile!</string>
 
     <string name="notif_time_settings_title">Notifica di scandenza del parcheggio</string>
 
