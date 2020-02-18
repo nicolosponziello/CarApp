@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Layout;
 import android.util.Log;
@@ -35,11 +36,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.nicolosponziello.carparking.R;
+import com.nicolosponziello.carparking.activity.FullImageActivity;
 import com.nicolosponziello.carparking.activity.NewParkActivity;
 import com.nicolosponziello.carparking.model.ParkManager;
 import com.nicolosponziello.carparking.model.ParkingData;
 
 import java.io.File;
+import java.io.IOError;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -48,13 +52,12 @@ import java.util.UUID;
 public class NewParkFragment extends Fragment {
 
     private static final int REQUEST_PHOTO = 2;
-    private static final String DIALOG_TIME = "DialogTime";
-    private static final int REQUEST_TIME = 1;
+    public static final String PHOTO_EXTRA = "photo_extra";
 
     private TextView coordinateValue;
     private ImageView photoView;
     private ImageButton addPhotoBtn;
-    private File photoFile;
+    private String photoFilePath;
     private Button addTimeBtn;
     private ParkingData newParking;
     private LinearLayout parkimeterLayout;
@@ -105,23 +108,21 @@ public class NewParkFragment extends Fragment {
         newParking = new ParkingData();
         newParking.setId(UUID.randomUUID());
 
-        final Intent captureImage =  new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         addPhotoBtn.setOnClickListener(v -> {
-            /*Uri uri = FileProvider.getUriForFile(getActivity(),
-                    "com.nicolosponziello.android.carparking.fileprovider",
-                    photoFile);
-            captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-
-            List<ResolveInfo> cameraActivities = getActivity().getPackageManager().queryIntentActivities(captureImage, PackageManager.MATCH_DEFAULT_ONLY);
-
-            for(ResolveInfo activity: cameraActivities){
-                getActivity().grantUriPermission(activity.activityInfo.packageName, uri,
-                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            }
-            startActivityForResult(captureImage, REQUEST_PHOTO);*/
             Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if(pictureIntent.resolveActivity(getActivity().getPackageManager()) != null){
-                startActivityForResult(pictureIntent, REQUEST_PHOTO);
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile(newParking.getId());
+                }catch (IOException e){
+                    Log.d("CarParking", "Error creating temp file");
+                }
+                if(photoFile != null){
+                    Uri photoUri = FileProvider.getUriForFile(getActivity(), "com.nicolosponziello.android.carparking.fileprovider", photoFile);
+                    pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                    photoFilePath = photoFile.getAbsolutePath();
+                    startActivityForResult(pictureIntent, REQUEST_PHOTO);
+                }
             }
         });
         //show dialog to setup exp time
@@ -140,6 +141,14 @@ public class NewParkFragment extends Fragment {
             };
             TimePickerDialog dialog = new TimePickerDialog(getActivity(), android.R.style.Theme_Material_Dialog, listener, calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE), true);
             dialog.show();
+        });
+
+        photoView.setOnClickListener(v -> {
+            if(photoFilePath != null && photoFilePath != ""){
+                Intent intent = new Intent(getContext(), FullImageActivity.class);
+                intent.putExtra(PHOTO_EXTRA, photoFilePath);
+                startActivity(intent);
+            }
         });
 
 
@@ -165,6 +174,7 @@ public class NewParkFragment extends Fragment {
             newParking.setParkSpot(spot);
             newParking.setActive(true);
             newParking.setAddress(address);
+            newParking.setPhotoPath(photoFilePath);
 
             ParkManager.getInstance(getActivity()).addParkingData(newParking);
             ParkManager.getInstance(getActivity()).setCurrentParking(newParking);
@@ -172,5 +182,28 @@ public class NewParkFragment extends Fragment {
             getActivity().finish();
         });
         return view;
+    }
+
+    private File createImageFile(UUID id) throws IOException {
+        String imageName = id.toString();
+        File dir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageName,
+                ".jpg",
+                dir
+        );
+        photoFilePath = image.getAbsolutePath();
+        return image;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == REQUEST_PHOTO){
+            if(resultCode == Activity.RESULT_OK){
+                File f = new File(photoFilePath);
+                Uri uri = Uri.fromFile(f);
+                photoView.setImageURI(uri);
+            }
+        }
     }
 }

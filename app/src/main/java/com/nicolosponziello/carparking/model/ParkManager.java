@@ -5,11 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-
 import com.nicolosponziello.carparking.database.CustomCursorWrapper;
 import com.nicolosponziello.carparking.database.DatabaseHelper;
 import com.nicolosponziello.carparking.database.DatabaseSchema;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -99,11 +97,6 @@ public class ParkManager {
         return this.currentParking != null;
     }
 
-    public File getPhotoFile(ParkingData data){
-        File dir = context.getFilesDir();
-        return new File(dir, data.getPhotoFilename());
-    }
-
     private static ContentValues getContentValues(ParkingData data) {
         ContentValues values = new ContentValues();
         values.put(DatabaseSchema.ParkTable.Cols.FIELD_ACTIVE, data.isActive());
@@ -116,7 +109,7 @@ public class ParkManager {
         values.put(DatabaseSchema.ParkTable.Cols.FIELD_LAT, data.getLatitude());
         values.put(DatabaseSchema.ParkTable.Cols.FIELD_LONG, data.getLongitude());
         values.put(DatabaseSchema.ParkTable.Cols.FIELD_NOTE, data.getNote());
-        values.put(DatabaseSchema.ParkTable.Cols.FIELD_PHOTO, data.getPhotoFilename());
+        values.put(DatabaseSchema.ParkTable.Cols.FIELD_PHOTO, data.getPhotoPath());
         values.put(DatabaseSchema.ParkTable.Cols.FIELD_SPOT, data.getParkSpot());
         values.put(DatabaseSchema.ParkTable.Cols.FIELD_UUID, data.getId().toString());
 

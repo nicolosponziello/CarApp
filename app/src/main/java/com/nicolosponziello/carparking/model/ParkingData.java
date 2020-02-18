@@ -19,7 +19,7 @@ public class ParkingData {
     private float cost;
     private long expiration;
     private String city;
-    private String photoName;
+    private String photoPath;
     private Date date; //ms
     private UUID id;
 
@@ -58,8 +58,8 @@ public class ParkingData {
         return city;
     }
 
-    public String getPhotoFilename() {
-        return "IMG_" + id.toString() + ".jpg";
+    public String getPhotoPath() {
+        return photoPath;
     }
 
     public Date getDate() {
@@ -124,5 +124,9 @@ public class ParkingData {
 
     public void setExpiration(long expiration) {
         this.expiration = expiration;
+    }
+
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = photoPath;
     }
 }
