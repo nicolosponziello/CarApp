@@ -159,21 +159,35 @@ public class NewParkFragment extends Fragment {
         });
         //save btn
         saveBtn.setOnClickListener(v -> {
-            note = noteInput.getText().toString();
-            address = addressInput.getText().toString();
-            level = levelInput.getText().toString();
-            spot = spotInput.getText().toString();
-            cost = Float.valueOf(costInput.getText().toString());
+            if(noteInput.getText().length() > 0){
+                note = noteInput.getText().toString();
+                newParking.setNote(note);
+            }
+            if(addressInput.getText().length() > 0) {
+                address = addressInput.getText().toString();
+                newParking.setAddress(address);
+            }
+            if(levelInput.getText().length() > 0) {
+                level = levelInput.getText().toString();
+                newParking.setParkLevel(level);
+            }
 
-            newParking.setNote(note);
+            if(spotInput.getText().length() > 0){
+                spot = spotInput.getText().toString();
+                newParking.setParkSpot(spot);
+            }
+
+            if(costInput.getText().length() > 0){
+                cost = Float.valueOf(costInput.getText().toString());
+                newParking.setCost(cost);
+            }
+
             newParking.setLongitude(lon);
             newParking.setLatitude(lat);
             newParking.setDate(new Date());
-            newParking.setParkLevel(level);
-            newParking.setCost(cost);
-            newParking.setParkSpot(spot);
+
+
             newParking.setActive(true);
-            newParking.setAddress(address);
             newParking.setPhotoPath(photoFilePath);
 
             ParkManager.getInstance(getActivity()).addParkingData(newParking);

@@ -28,6 +28,7 @@ public class CustomCursorWrapper extends CursorWrapper {
         long exp = getLong(getColumnIndex(ParkTable.Cols.FIELD_EXP));
         String city = getString(getColumnIndex(ParkTable.Cols.FIELD_CITY));
         Date date = new Date(getString(getColumnIndex(ParkTable.Cols.FIELD_DATE)));
+        String photoPath = getString(getColumnIndex(ParkTable.Cols.FIELD_PHOTO));
 
         ParkingData newData = new ParkingData();
 
@@ -43,6 +44,7 @@ public class CustomCursorWrapper extends CursorWrapper {
         newData.setExpiration(exp);
         newData.setCity(city);
         newData.setDate(date);
+        newData.setPhotoPath(photoPath);
 
         return newData;
     }

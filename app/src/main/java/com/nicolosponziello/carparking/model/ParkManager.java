@@ -130,19 +130,11 @@ public class ParkManager {
         return new CustomCursorWrapper(cursor);
     }
 
-    private ParkingData getCurrentParkingFromDB() {
-        CustomCursorWrapper cursorWrapper = queryParking(DatabaseSchema.ParkTable.Cols.FIELD_ACTIVE + " = ?", new String[]{new Boolean(true).toString()});
-        try {
-            if(cursorWrapper.getCount() == 0){
-                Log.d("Data", "no found");
-                return null;
-            }
-            cursorWrapper.moveToFirst();
-            ParkingData data = cursorWrapper.getParkingData();
-            Log.d("Data", "from db " + data.getId().toString());
-            return data;
-        }finally {
-            cursorWrapper.close();
-        }
+    public void setDoneParking(){
+        this.currentParking.setActive(false);
+        updateParking(this.currentParking);
+
+        this.currentParking = null;
+        this.parkingData = getParkingData();
     }
 }

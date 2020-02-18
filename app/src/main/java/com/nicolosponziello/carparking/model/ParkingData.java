@@ -1,6 +1,7 @@
 package com.nicolosponziello.carparking.model;
 
 import android.media.Image;
+import android.util.Log;
 
 import java.sql.Blob;
 import java.time.LocalDateTime;
@@ -127,6 +128,7 @@ public class ParkingData {
     }
 
     public void setPhotoPath(String photoPath) {
+        Log.d("CarParking", "setting photopath");
         this.photoPath = photoPath;
     }
 }

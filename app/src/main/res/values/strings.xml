@@ -19,6 +19,7 @@
     <string name="cancel_btn">Annulla</string>
     <string name="save_btn">Salva</string>
     <string name="note_label">Note</string>
+    <string name="done_btn">Fatto</string>
 
     <!-- Current parking card -->
     <string name="current_parking_title">Ultimo parcheggio</string>

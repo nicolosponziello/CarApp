@@ -18,6 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="20sp"
             android:orientation="vertical"
             android:padding="30sp">
 
@@ -38,16 +39,25 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/currentPhoto"
+                android:id="@+id/currentPhotoCard"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="20sp"
+                android:layout_marginBottom="20sp"
                 card_view:srcCompat="@android:drawable/ic_lock_lock" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/addressCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="AddressPlaceholder"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/cityCard"
@@ -63,13 +73,31 @@
                     android:text="DataPlaceholder"
                     android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/addressCard"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="AddressPlaceholder"
-                    android:textSize="18sp" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20sp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/doneBtn"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/done_btn"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                <ImageButton
+                    android:id="@+id/goBtn"
+                    style="@android:style/Widget.Material.ImageButton"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="#00FFFFFF"
+                    card_view:srcCompat="@drawable/ic_arrow_forward_white" />
             </LinearLayout>
 
         </LinearLayout>
