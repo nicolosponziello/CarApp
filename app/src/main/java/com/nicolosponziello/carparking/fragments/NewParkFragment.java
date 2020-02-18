@@ -5,6 +5,8 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -47,6 +49,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 public class NewParkFragment extends Fragment {
@@ -189,6 +192,7 @@ public class NewParkFragment extends Fragment {
 
             newParking.setActive(true);
             newParking.setPhotoPath(photoFilePath);
+            newParking.setCity(getCityFromCoord(Float.valueOf(lat), Float.valueOf(lon)));
 
             ParkManager.getInstance(getActivity()).addParkingData(newParking);
             ParkManager.getInstance(getActivity()).setCurrentParking(newParking);
@@ -219,5 +223,19 @@ public class NewParkFragment extends Fragment {
                 photoView.setImageURI(uri);
             }
         }
+    }
+
+    private String getCityFromCoord(float lat, float lon){
+        Geocoder geocoder = new Geocoder(getActivity(), Locale.ITALY);
+        String res = null;
+        try {
+            List<Address> list = geocoder.getFromLocation(lat, lon, 1);
+            if(list.size() > 0){
+                res = list.get(0).getLocality();
+            }
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        return res;
     }
 }

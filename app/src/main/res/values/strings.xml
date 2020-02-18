@@ -3,7 +3,7 @@
     <string name="no_pos_saved">Nessun parcheggio salvato</string>
     <string name="coordinate_label">Coordinate</string>
     <string name="address_label">Indirizzo</string>
-    <string name="level_label">Piano: </string>
+    <string name="level_label">Piano</string>
     <string name="level_input_hint">piano</string>
     <string name="place_label">Posto</string>
     <string name="place_input_hint">posto</string>
@@ -20,6 +20,11 @@
     <string name="save_btn">Salva</string>
     <string name="note_label">Note</string>
     <string name="done_btn">Fatto</string>
+    <string name="city_label">Città:</string>
+    <string name="date_label">Data:</string>
+    <string name="exp_label">Scandenza parcheggio</string>
+
+    <string name="activity_detail_title">Dettagli</string>
 
     <!-- Current parking card -->
     <string name="current_parking_title">Ultimo parcheggio</string>

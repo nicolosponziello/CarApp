@@ -77,8 +77,10 @@ public class ParkManager {
     }
 
     public ParkingData getParkingData(UUID id){
+        Log.d("app", "looking for " + id.toString());
         for(ParkingData data : parkingData) {
-            if(data.getId() == id){
+            Log.d("app", "analizing " + data.getId().toString());
+            if(data.getId().equals(id)){
                 return data;
             }
         }

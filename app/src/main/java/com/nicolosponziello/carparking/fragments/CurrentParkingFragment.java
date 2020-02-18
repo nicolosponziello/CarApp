@@ -11,22 +11,17 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import com.google.android.material.card.MaterialCardView;
 import com.nicolosponziello.carparking.R;
+import com.nicolosponziello.carparking.activity.DetailActivity;
 import com.nicolosponziello.carparking.model.ParkManager;
 import com.nicolosponziello.carparking.model.ParkingData;
+import com.nicolosponziello.carparking.util.Const;
 import com.nicolosponziello.carparking.util.Utils;
-
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 public class CurrentParkingFragment extends Fragment {
 
@@ -51,8 +46,10 @@ public class CurrentParkingFragment extends Fragment {
         photoCard = view.findViewById(R.id.currentPhotoCard);
         doneBtn = view.findViewById(R.id.doneBtn);
         goBtn = view.findViewById(R.id.goBtn);
+        if(parkingData.getCity() != null && parkingData.getCity() != ""){
+            cityLabel.setText("Città: " + parkingData.getCity());
+        }
 
-        cityLabel.setText(parkingData.getCity());
         addressLabel.setText(parkingData.getAddress());
 
         dateLabel.setText("Data: " + Utils.formatDate(parkingData.getDate()));
@@ -68,6 +65,9 @@ public class CurrentParkingFragment extends Fragment {
 
         card.setOnClickListener(v -> {
             //open details
+            Intent intent = new Intent(getActivity(), DetailActivity.class);
+            intent.putExtra(Const.DETAIL_EXTRA, parkingData.getId().toString());
+            startActivity(intent);
         });
 
         goBtn.setOnClickListener(v -> {
