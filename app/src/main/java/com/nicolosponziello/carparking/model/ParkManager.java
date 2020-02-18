@@ -24,13 +24,12 @@ public class ParkManager {
 
 
     private ParkManager(Context c){
+        Log.d("Data", "inst ParkManager");
         this.dbHelper = new DatabaseHelper(c);
         this.context = c.getApplicationContext();
         database = dbHelper.getWritableDatabase();
         this.parkingData = getParkingData();
-        this.currentParking = getCurrentParkingFromDB();
-
-        Log.d("ParkManager", "Instatiatin data " + parkingData.size());
+        //this.currentParking = getCurrentParkingFromDB();
     }
 
     public static ParkManager getInstance(Context context) {
@@ -63,8 +62,10 @@ public class ParkManager {
             cursor.moveToFirst();
             while(!cursor.isAfterLast()){
                 ParkingData data = cursor.getParkingData();
+                Log.d("Data", "Found "+ data.getId().toString() + "-"+data.isActive());
                 if(data.isActive()){
-                    setCurrentParking(data);
+                    Log.d("Data", "executes");
+                    this.currentParking = data;
                 }
                 tmp.add(data);
                 cursor.moveToNext();
@@ -85,7 +86,7 @@ public class ParkManager {
     }
 
     public void setCurrentParking(ParkingData currentParking) {
-        Log.d("ParkManager", "setCurrentParking");
+        Log.d("Data", "setCurrentParking");
         this.currentParking = currentParking;
     }
 
@@ -130,13 +131,16 @@ public class ParkManager {
     }
 
     private ParkingData getCurrentParkingFromDB() {
-        CustomCursorWrapper cursorWrapper = queryParking(DatabaseSchema.ParkTable.Cols.FIELD_ACTIVE + " = ?", new String[]{"true"});
+        CustomCursorWrapper cursorWrapper = queryParking(DatabaseSchema.ParkTable.Cols.FIELD_ACTIVE + " = ?", new String[]{new Boolean(true).toString()});
         try {
             if(cursorWrapper.getCount() == 0){
+                Log.d("Data", "no found");
                 return null;
             }
             cursorWrapper.moveToFirst();
-            return cursorWrapper.getParkingData();
+            ParkingData data = cursorWrapper.getParkingData();
+            Log.d("Data", "from db " + data.getId().toString());
+            return data;
         }finally {
             cursorWrapper.close();
         }

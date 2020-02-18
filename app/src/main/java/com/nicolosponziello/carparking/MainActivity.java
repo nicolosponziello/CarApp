@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupFragments(){
         if(ParkManager.getInstance(this).hasActiveParking()){
             FragmentManager fragmentManager = getSupportFragmentManager();
+            Log.d("Data", "has active");
             fragmentManager.beginTransaction().add(R.id.current_pos_fragment, new CurrentParkingFragment()).commit();
         }else{
             FragmentManager fragmentManager = getSupportFragmentManager();
