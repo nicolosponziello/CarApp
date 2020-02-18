@@ -2,6 +2,7 @@ package com.nicolosponziello.carparking.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -27,6 +28,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
     private TextView cityLabel, dateLabel, coordLabel, addrLabel,
         spotLabel, levelLabel, noteLabel, costLabel, expLabel;
 
+    private ImageButton closeBtn;
 
     private ParkingData parkingData;
     @Override
@@ -45,6 +47,9 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         expLabel = findViewById(R.id.expValue);
         noteLabel = findViewById(R.id.noteValue);
         costLabel = findViewById(R.id.costValue);
+
+        closeBtn = findViewById(R.id.closeBtn);
+        closeBtn.setOnClickListener(v -> finish());
 
         Bundle extras = getIntent().getExtras();
         String id = extras.getString(Const.DETAIL_EXTRA);

@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="15sp"
     android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/topLayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="right|end">
+
+        <ImageButton
+            android:id="@+id/closeBtn"
+            style="@android:style/Widget.Material.ImageButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            tools:src="@android:drawable/ic_delete" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textView4"
@@ -56,7 +72,8 @@
                 android:id="@+id/dateValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="2" />
+                android:layout_column="2"
+                android:gravity="right"/>
         </TableRow>
 
         <TableRow
@@ -94,7 +111,8 @@
                 android:id="@+id/addressValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="2" />
+                android:layout_column="2"
+                android:gravity="right"/>
         </TableRow>
 
         <TableRow
@@ -112,7 +130,8 @@
                 android:id="@+id/placeValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="2" />
+                android:layout_column="2"
+                android:gravity="right"/>
 
         </TableRow>
 
@@ -131,7 +150,8 @@
                 android:id="@+id/levelValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="2" />
+                android:layout_column="2"
+                android:gravity="right"/>
         </TableRow>
 
         <TableRow
@@ -149,7 +169,8 @@
                 android:id="@+id/noteValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="2" />
+                android:layout_column="2"
+                android:gravity="right"/>
         </TableRow>
 
         <TableRow
@@ -167,7 +188,8 @@
                 android:id="@+id/costValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="2" />
+                android:layout_column="2"
+                android:gravity="right"/>
         </TableRow>
 
         <TableRow
@@ -185,7 +207,8 @@
                 android:id="@+id/expValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="2" />
+                android:layout_column="2"
+                android:gravity="right"/>
         </TableRow>
     </TableLayout>
 
