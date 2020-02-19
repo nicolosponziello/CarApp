@@ -34,11 +34,11 @@ import static com.nicolosponziello.carparking.fragments.NewParkFragment.PHOTO_EX
 public class DetailActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private TextView cityLabel, dateLabel, coordLabel, addrLabel,
-        spotLabel, levelLabel, noteLabel, costLabel, expLabel;
+        spotLabel, levelLabel, noteLabel, costLabel, expLabel, photoLabel;
     private ImageView photoView;
 
     private ImageButton closeBtn;
-    private Button deleteBtn;
+    private ImageButton deleteBtn;
 
     private ParkingData parkingData;
     @Override
@@ -60,6 +60,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         photoView = findViewById(R.id.photoView);
         closeBtn = findViewById(R.id.closeBtn);
         deleteBtn = findViewById(R.id.deleteBtn);
+        photoLabel = findViewById(R.id.photoDetailLabel);
 
         closeBtn.setOnClickListener(v -> finish());
 
@@ -133,6 +134,8 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         if(parkingData.getPhotoPath() == null){
             Log.d("Photo", "error");
             photoView.setVisibility(View.GONE);
+            photoLabel.setVisibility(View.GONE);
+
         }else{
             Log.d("Photo", parkingData.getPhotoPath());
             File f = new File(parkingData.getPhotoPath());
@@ -160,6 +163,6 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         double lon = Double.valueOf(parkingData.getLongitude());
         googleMap.addMarker(new MarkerOptions().position(new LatLng(lat, lon)));
         googleMap.setMyLocationEnabled(true);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 10));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 60));
     }
 }
