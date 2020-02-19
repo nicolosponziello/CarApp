@@ -26,8 +26,10 @@
     <string name="photo_label">Foto</string>
     <string name="map_label">Mappa</string>
     <string name="delete_btn">Elimina</string>
-
     <string name="activity_detail_title">Dettagli</string>
+    <string name="menu_home">Home</string>
+    <string name="open_drawer">Open drawer</string>
+    <string name="close_drawer">Close drawer</string>
 
     <!-- Current parking card -->
     <string name="current_parking_title">Ultimo parcheggio</string>
@@ -65,7 +67,7 @@
     <!-- Notification -->
     <string name="notification_title">Parchimetro in scadenza</string>
     <string name="notification_text">Ti ricordo che il tuo parcheggio scadra tra poco!</string>
-
     <string name="notif_channel_name">CarParkingChannel</string>
     <string name="notif_channel_desc">Channel per notifiche CarParking</string>
+
 </resources>

@@ -19,6 +19,7 @@ import com.nicolosponziello.carparking.R;
 import com.nicolosponziello.carparking.activity.DetailActivity;
 import com.nicolosponziello.carparking.model.ParkManager;
 import com.nicolosponziello.carparking.model.ParkingData;
+import com.nicolosponziello.carparking.notification.NotifManager;
 import com.nicolosponziello.carparking.util.Const;
 import com.nicolosponziello.carparking.util.Utils;
 import java.io.File;
@@ -86,6 +87,7 @@ public class CurrentParkingFragment extends Fragment {
         doneBtn.setOnClickListener(v -> {
             ParkManager.getInstance(getActivity()).setDoneParking();
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.current_pos_fragment, new NoPosFragment()).commit();
+            NotifManager.getInstance().stopAlarm();
         });
         return view;
     }

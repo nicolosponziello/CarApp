@@ -1,8 +1,10 @@
 package com.nicolosponziello.carparking;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +14,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.Toast;
+
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.nicolosponziello.carparking.activity.AboutActivity;
 import com.nicolosponziello.carparking.activity.NewParkActivity;
 import com.nicolosponziello.carparking.activity.SettingsActivity;
@@ -28,15 +34,36 @@ public class MainActivity extends AppCompatActivity {
     private FrameLayout bottomBar;
     private Toolbar toolbar;
     private FloatingActionButton fabNewButton;
+    private NavigationView navigationView;
+    private ActionBarDrawerToggle toggle;
+
+    private DrawerLayout drawerLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         posFrame = findViewById(R.id.current_pos_fragment);
-        bottomBar = findViewById(R.id.bottom_bar_frag);
         toolbar = findViewById(R.id.toolbar);
         fabNewButton = findViewById(R.id.newPosition);
+        drawerLayout = findViewById(R.id.drawer_layout);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);
+        toggle.setDrawerIndicatorEnabled(true);
+        toggle.syncState();
+
+        drawerLayout.addDrawerListener(toggle);
+
+
+
+        navigationView = findViewById(R.id.lateralMenu);
+        navigationView.setNavigationItemSelectedListener( item -> {
+            Toast.makeText(this, "Hello", Toast.LENGTH_SHORT).show();
+            return true;
+        });
 
         SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.shared_prefs), Context.MODE_PRIVATE);
         boolean introShown = sharedPreferences.getBoolean(getString(R.string.intro_shown), false);
@@ -48,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, NewParkActivity.class));
         }));
 
-        setSupportActionBar(toolbar);
 
         setupFragments();
 
@@ -72,6 +98,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(toggle.onOptionsItemSelected(item)){
+            return true;
+        }
         switch(item.getItemId()){
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));

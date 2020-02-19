@@ -2,6 +2,7 @@ package com.nicolosponziello.carparking.fragments;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -45,6 +46,7 @@ import com.nicolosponziello.carparking.activity.FullImageActivity;
 import com.nicolosponziello.carparking.activity.NewParkActivity;
 import com.nicolosponziello.carparking.model.ParkManager;
 import com.nicolosponziello.carparking.model.ParkingData;
+import com.nicolosponziello.carparking.notification.NotifManager;
 import com.nicolosponziello.carparking.receivers.AlarmReceiver;
 
 import java.io.File;
@@ -60,7 +62,6 @@ public class NewParkFragment extends Fragment {
 
     private static final int REQUEST_PHOTO = 2;
     public static final String PHOTO_EXTRA = "photo_extra";
-    private static final int REQUEST_ALARM = 1;
 
     private TextView coordinateValue;
     private ImageView photoView;
@@ -254,14 +255,18 @@ public class NewParkFragment extends Fragment {
         boolean enabled = PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(getString(R.string.enable_notif_key), false);
         if(enabled) {
             AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(getContext().ALARM_SERVICE);
-            Intent intent = new Intent(getContext(), AlarmReceiver.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), REQUEST_ALARM, intent, 0);
+            //Intent intent = new Intent(getContext(), AlarmReceiver.class);
+            //PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), REQUEST_ALARM, intent, 0);
 
             int before = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(getContext()).getString(getString(R.string.notif_key), "0"));
             int millis = before * 60 * 1000; //minutes -> millis
             long target = newParking.getExpiration() - millis;
+            if(target < new Date().getTime()){
+                target = newParking.getExpiration();
+            }
             Log.d("Alarm", "Setting alarm to " + target);
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, target, pendingIntent);
+            //alarmManager.setExact(NotifManager.RTC_WAKEUP, target, pendingIntent);
+            NotifManager.getInstance().setupAlarm(alarmManager, target, getActivity());
         }
     }
 }

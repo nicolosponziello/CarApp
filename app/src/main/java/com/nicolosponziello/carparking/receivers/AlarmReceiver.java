@@ -9,6 +9,7 @@ import android.util.Log;
 
 import androidx.core.app.NotificationManagerCompat;
 
+import com.nicolosponziello.carparking.notification.NotifManager;
 import com.nicolosponziello.carparking.notification.ParkingNotification;
 
 public class AlarmReceiver extends BroadcastReceiver {
@@ -20,5 +21,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         Notification notification = ParkingNotification.createExpirationNotification(context);
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(context);
         managerCompat.notify(NOTFICATION_ID, notification);
+        NotifManager.getInstance().stopAlarm();
     }
 }
