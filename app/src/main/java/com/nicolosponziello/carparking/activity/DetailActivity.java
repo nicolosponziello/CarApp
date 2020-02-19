@@ -1,8 +1,12 @@
 package com.nicolosponziello.carparking.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -20,13 +24,17 @@ import com.nicolosponziello.carparking.model.ParkingData;
 import com.nicolosponziello.carparking.util.Const;
 import com.nicolosponziello.carparking.util.Utils;
 
+import java.io.File;
 import java.util.Date;
 import java.util.UUID;
+
+import static com.nicolosponziello.carparking.fragments.NewParkFragment.PHOTO_EXTRA;
 
 public class DetailActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private TextView cityLabel, dateLabel, coordLabel, addrLabel,
         spotLabel, levelLabel, noteLabel, costLabel, expLabel;
+    private ImageView photoView;
 
     private ImageButton closeBtn;
 
@@ -47,7 +55,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         expLabel = findViewById(R.id.expValue);
         noteLabel = findViewById(R.id.noteValue);
         costLabel = findViewById(R.id.costValue);
-
+        photoView = findViewById(R.id.photoView);
         closeBtn = findViewById(R.id.closeBtn);
         closeBtn.setOnClickListener(v -> finish());
 
@@ -117,6 +125,26 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
             costLabel.setVisibility(View.GONE);
             findViewById(R.id.costText).setVisibility(View.GONE);
         }
+
+        if(parkingData.getPhotoPath() == null){
+            Log.d("Photo", "error");
+            photoView.setVisibility(View.GONE);
+        }else{
+            Log.d("Photo", parkingData.getPhotoPath());
+            File f = new File(parkingData.getPhotoPath());
+            Uri uri = Uri.fromFile(f);
+            photoView.setImageURI(uri);
+
+            photoView.setOnClickListener(v -> {
+                String photoFilePath = parkingData.getPhotoPath();
+                if(photoFilePath != null && photoFilePath != ""){
+                    Intent intent = new Intent(this, FullImageActivity.class);
+                    intent.putExtra(PHOTO_EXTRA, photoFilePath);
+                    startActivity(intent);
+                }
+            });
+        }
+
 
     }
 

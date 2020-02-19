@@ -50,12 +50,13 @@ public class CurrentParkingFragment extends Fragment {
             cityLabel.setText("Città: " + parkingData.getCity());
         }
 
-        addressLabel.setText(parkingData.getAddress());
+        addressLabel.setText("Indirizzo: " + parkingData.getAddress());
 
         dateLabel.setText("Data: " + Utils.formatDate(parkingData.getDate()));
 
         if(parkingData.getPhotoPath() == null){
             Log.d("Photo", "error");
+            photoCard.setVisibility(View.GONE);
         }else{
             Log.d("Photo", parkingData.getPhotoPath());
             File f = new File(parkingData.getPhotoPath());
