@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <group
         android:checkableBehavior="single">
 
         <item
             android:id="@+id/homeItem"
             android:checked="false"
-            android:title="@string/menu_home"/>
+            android:title="@string/menu_home"
+            android:icon="@drawable/ic_action_home"/>
         <item
             android:id="@+id/settingsItem"
             android:checked="false"
-            android:title="@string/menu_settings"/>
+            android:title="@string/menu_settings"
+            android:icon="@drawable/ic_action_settings"/>
         <item
             android:id="@+id/historyItem"
             android:checked="false"
-            android:title="@string/history_menu"/>
+            android:title="@string/history_menu"
+            android:icon="@drawable/ic_action_history"/>
 
     </group>
     <group
