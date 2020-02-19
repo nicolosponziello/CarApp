@@ -138,10 +138,11 @@ public class ParkManager {
 
 
     public void deleteParkingData(UUID id){
-        if(this.currentParking.getId().equals(id)){
+        if(this.currentParking != null && this.currentParking.getId().equals(id)){
             this.currentParking = null;
         }
         database.delete(DatabaseSchema.ParkTable.TABLE_NAME, DatabaseSchema.ParkTable.Cols.FIELD_UUID + " = ?", new String[]{id.toString()});
-        this.parkingData = getParkingData();
+        ParkingData toDelete = getParkingData(id);
+        this.parkingData.remove(toDelete);
     }
 }

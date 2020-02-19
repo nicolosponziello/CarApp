@@ -2,6 +2,7 @@ package com.nicolosponziello.carparking.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.nicolosponziello.carparking.R;
 import com.nicolosponziello.carparking.activity.DetailActivity;
+import com.nicolosponziello.carparking.model.ParkManager;
 import com.nicolosponziello.carparking.model.ParkingData;
 import com.nicolosponziello.carparking.util.Const;
 import com.nicolosponziello.carparking.util.Utils;
@@ -70,5 +72,10 @@ public class ParkingDataAdapter extends RecyclerView.Adapter<ParkingDataAdapter.
             addressTextView = view.findViewById(R.id.addressItem);
 
         }
+    }
+
+    public void reloadData(){
+        Log.d("data", "reloading");
+        this.data = ParkManager.getInstance(context).getParkingData();
     }
 }
