@@ -80,6 +80,17 @@
 
         <receiver android:name=".receivers.AlarmReceiver"/>
 
+        <service
+            android:name=".tile.CarParkingTileService"
+            android:icon="@drawable/parking_tile_icon"
+            android:label="Parcheggio"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE"/>
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>
