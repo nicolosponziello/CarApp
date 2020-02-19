@@ -33,6 +33,8 @@ public class NotifManager {
     }
 
     public void stopAlarm(){
-        manager.cancel(pendingIntent);
+        if(pendingIntent != null) {
+            manager.cancel(pendingIntent);
+        }
     }
 }
