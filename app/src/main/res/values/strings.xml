@@ -30,6 +30,7 @@
     <string name="menu_home">Home</string>
     <string name="open_drawer">Open drawer</string>
     <string name="close_drawer">Close drawer</string>
+    <string name="history_menu">Storico</string>
 
     <!-- Current parking card -->
     <string name="current_parking_title">Ultimo parcheggio</string>

@@ -20,6 +20,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.nicolosponziello.carparking.activity.AboutActivity;
+import com.nicolosponziello.carparking.activity.HistoryActivity;
 import com.nicolosponziello.carparking.activity.NewParkActivity;
 import com.nicolosponziello.carparking.activity.SettingsActivity;
 import com.nicolosponziello.carparking.fragments.CurrentParkingFragment;
@@ -61,7 +62,19 @@ public class MainActivity extends AppCompatActivity {
 
         navigationView = findViewById(R.id.lateralMenu);
         navigationView.setNavigationItemSelectedListener( item -> {
-            Toast.makeText(this, "Hello", Toast.LENGTH_SHORT).show();
+            switch (item.getItemId()){
+                case R.id.homeItem:
+                    break;
+                case R.id.settingsItem:
+                    startActivity(new Intent(this, SettingsActivity.class));
+                    break;
+                case R.id.historyItem:
+                    startActivity(new Intent(this, HistoryActivity.class));
+                    break;
+                case R.id.aboutItem:
+                    startActivity(new Intent(this, AboutActivity.class));
+                    break;
+            }
             return true;
         });
 
