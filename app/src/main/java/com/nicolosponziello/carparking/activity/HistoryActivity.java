@@ -21,7 +21,7 @@ public class HistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_history);
 
         recyclerView = findViewById(R.id.recyclerView);
-        ParkingDataAdapter adapter = new ParkingDataAdapter(ParkManager.getInstance(this).getParkingData());
+        ParkingDataAdapter adapter = new ParkingDataAdapter(ParkManager.getInstance(this).getParkingData(), this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
