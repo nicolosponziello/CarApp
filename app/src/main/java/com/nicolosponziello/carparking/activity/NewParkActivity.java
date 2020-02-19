@@ -32,9 +32,8 @@ public class NewParkActivity extends AppCompatActivity {
     public static final String BUNDLE_LAT = "LAT";
     public static final String BUNDLE_LONG = "LONG";
 
-    private static final int INTERNET_PERMISSION = 0;
     private static final int FINE_LOCATION_PERMISSION = 1;
-    private static final int COARSE_LOCATION_PERMISSION = 2;
+    private static final int EXTERNAL_STORAGE_PERMISSION = 2;
 
     private FusedLocationProviderClient locationProviderClient;
 
@@ -51,7 +50,12 @@ public class NewParkActivity extends AppCompatActivity {
         if not, ask user for them
          */
         if(!hasPermissions()){
-            requestPermissions();
+            if(!hasLocationPermissions()){
+                requesLocationPermissions();
+            }
+            if(!hasStoragePermission()){
+                requestStoragePermission();
+            }
         }else{
             if(isLocationEnabled()){
                 Task<Location> locationTask = locationProviderClient.getLastLocation();
@@ -86,6 +90,15 @@ public class NewParkActivity extends AppCompatActivity {
             if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //we have the best permission for localization
                 Log.d(getClass().getSimpleName(), "Location permissions granted");
+            }else{
+                finish();
+            }
+        }
+        if(requestCode == EXTERNAL_STORAGE_PERMISSION){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Log.d(getClass().getSimpleName(), "External Storage permission");
+            }else{
+                finish();
             }
         }
     }
@@ -95,19 +108,31 @@ public class NewParkActivity extends AppCompatActivity {
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
-    private boolean hasPermissions(){
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+    private boolean hasLocationPermissions(){
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
             return true;
         }
         return false;
     }
 
-    private void requestPermissions(){
-        //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, INTERNET_PERMISSION);
-        //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, COARSE_LOCATION_PERMISSION);
+    private boolean hasStoragePermission(){
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+            return true;
+        }
+        return false;
+    }
+
+    private void requesLocationPermissions(){
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, FINE_LOCATION_PERMISSION);
+    }
+
+    private void requestStoragePermission(){
+        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION);
+    }
+
+    private boolean hasPermissions(){
+        return hasLocationPermissions() && hasStoragePermission();
     }
 
     private void requestNewLocation(){
