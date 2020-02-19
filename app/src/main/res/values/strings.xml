@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">CarParking</string>
-    <string name="no_pos_saved">Nessun parcheggio salvato</string>
+    <string name="no_pos_saved">Nessun parcheggio attivo</string>
     <string name="coordinate_label">Coordinate</string>
     <string name="address_label">Indirizzo</string>
     <string name="level_label">Piano</string>
@@ -31,6 +31,9 @@
     <string name="open_drawer">Open drawer</string>
     <string name="close_drawer">Close drawer</string>
     <string name="history_menu">Storico</string>
+    <string name="about_activity_title">About</string>
+    <string name="history_activity_title">Storico</string>
+    <string name="no_data">Nessun dato</string>
 
     <!-- Current parking card -->
     <string name="current_parking_title">Ultimo parcheggio</string>

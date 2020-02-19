@@ -45,9 +45,23 @@ public class ParkingDataAdapter extends RecyclerView.Adapter<ParkingDataAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ParkingData parkingData = this.data.get(position);
 
-        holder.cityTextView.setText(parkingData.getCity());
-        holder.dateTextView.setText(Utils.formatDate(parkingData.getDate()));
-        holder.addressTextView.setText(parkingData.getAddress());
+        if (parkingData.getCity() != null) {
+            holder.cityTextView.setText("Città: " + parkingData.getCity());
+        }else{
+            holder.cityTextView.setVisibility(View.GONE);
+        }
+
+        if(parkingData.getDate() != null){
+            holder.dateTextView.setText("Data: " + Utils.formatDate(parkingData.getDate()));
+        }else{
+            holder.dateTextView.setVisibility(View.GONE);
+        }
+
+        if(parkingData.getAddress() != null){
+            holder.addressTextView.setText("Indirizzo: " + parkingData.getAddress());
+        }else{
+            holder.addressTextView.setVisibility(View.GONE);
+        }
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailActivity.class);
