@@ -48,6 +48,14 @@
     <string name="delete_db_key">delete_db</string>
     <string name="delete_db_title">Cancella Database</string>
     <string name="delete_db_desc">Attenzione! Operazione irrimediabile!</string>
+    <string name="notif_key">notif_key</string>
+    <string name="notif_title">Notifica scadenza parcheggio</string>
+    <string name="notif_desc">Notifica entro</string>
+    <string name="enable_notif_key">enable_notif</string>
+    <string name="enable_notif_title">Abilita notifiche</string>
+    <string name="enable_notif_desc">Abilita notifiche per scadenza parcheggio</string>
+    <string name="notif_category">Notifiche</string>
+    <string name="misc_pref_title">Varie</string>
 
     <string name="notif_time_settings_title">Notifica di scandenza del parcheggio</string>
 

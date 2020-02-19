@@ -2,13 +2,39 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:title="Impostazioni">
-    <Preference
-        android:key="@string/show_intro_key"
-        android:summary="@string/show_intro_settings_desc"
-        android:title="@string/show_intro_settings_title" />
-    <Preference
-        android:key="@string/delete_db_key"
-        android:summary="@string/delete_db_desc"
-        android:title="@string/delete_db_title"/>
+
+    <PreferenceCategory
+        android:title="@string/notif_category">
+
+        <SwitchPreference
+            android:key="@string/enable_notif_key"
+            android:summary="@string/enable_notif_desc"
+            android:title="@string/enable_notif_title" />
+        <EditTextPreference
+            android:defaultValue="30"
+            android:key="@string/notif_key"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/notif_title"
+            android:summary="@string/notif_desc"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/misc_pref_title">
+
+        <Preference
+            android:key="@string/show_intro_key"
+            android:summary="@string/show_intro_settings_desc"
+            android:title="@string/show_intro_settings_title" />
+        <Preference
+            android:key="@string/delete_db_key"
+            android:summary="@string/delete_db_desc"
+            android:title="@string/delete_db_title"/>
+
+    </PreferenceCategory>
+
+
+
 
 </PreferenceScreen>
