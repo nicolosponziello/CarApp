@@ -3,11 +3,14 @@ package com.nicolosponziello.carparking.notification;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 
+import com.nicolosponziello.carparking.MainActivity;
 import com.nicolosponziello.carparking.R;
 import com.nicolosponziello.carparking.util.Const;
 
@@ -31,12 +34,14 @@ public class ParkingNotification {
     }
 
     public static Notification createExpirationNotification(Context context){
-
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Const.NOTIF_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_skip_white)
             .setContentTitle(context.getString(R.string.notification_title))
             .setContentText(context.getString(R.string.notification_text))
-            .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         return builder.build();
     }

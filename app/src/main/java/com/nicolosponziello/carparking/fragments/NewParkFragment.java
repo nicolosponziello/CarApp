@@ -257,7 +257,7 @@ public class NewParkFragment extends Fragment {
             Intent intent = new Intent(getContext(), AlarmReceiver.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), REQUEST_ALARM, intent, 0);
 
-            int before = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(getContext()).getString(getString(R.string.notif_key), "30"));
+            int before = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(getContext()).getString(getString(R.string.notif_key), "0"));
             int millis = before * 60 * 1000; //minutes -> millis
             long target = newParking.getExpiration() - millis;
             Log.d("Alarm", "Setting alarm to " + target);
