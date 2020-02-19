@@ -56,7 +56,13 @@
     <string name="enable_notif_desc">Abilita notifiche per scadenza parcheggio</string>
     <string name="notif_category">Notifiche</string>
     <string name="misc_pref_title">Varie</string>
-
     <string name="notif_time_settings_title">Notifica di scandenza del parcheggio</string>
 
+
+    <!-- Notification -->
+    <string name="notification_title">Parchimetro in scadenza</string>
+    <string name="notification_text">Ti ricordo che il tuo parcheggio scadra tra poco!</string>
+
+    <string name="notif_channel_name">CarParkingChannel</string>
+    <string name="notif_channel_desc">Channel per notifiche CarParking</string>
 </resources>

@@ -1,6 +1,8 @@
 package com.nicolosponziello.carparking.fragments;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -30,6 +32,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -42,6 +45,7 @@ import com.nicolosponziello.carparking.activity.FullImageActivity;
 import com.nicolosponziello.carparking.activity.NewParkActivity;
 import com.nicolosponziello.carparking.model.ParkManager;
 import com.nicolosponziello.carparking.model.ParkingData;
+import com.nicolosponziello.carparking.receivers.AlarmReceiver;
 
 import java.io.File;
 import java.io.IOError;
@@ -56,6 +60,7 @@ public class NewParkFragment extends Fragment {
 
     private static final int REQUEST_PHOTO = 2;
     public static final String PHOTO_EXTRA = "photo_extra";
+    private static final int REQUEST_ALARM = 1;
 
     private TextView coordinateValue;
     private ImageView photoView;
@@ -185,6 +190,11 @@ public class NewParkFragment extends Fragment {
                 newParking.setCost(cost);
             }
 
+            if(expTime != 0){
+                newParking.setExpiration(expTime);
+                setupAlarm();
+            }
+
             newParking.setLongitude(lon);
             newParking.setLatitude(lat);
             newParking.setDate(new Date());
@@ -197,6 +207,7 @@ public class NewParkFragment extends Fragment {
             ParkManager.getInstance(getActivity()).addParkingData(newParking);
             ParkManager.getInstance(getActivity()).setCurrentParking(newParking);
             Log.d("DATA", newParking.toString());
+
             getActivity().finish();
         });
         return view;
@@ -237,5 +248,20 @@ public class NewParkFragment extends Fragment {
             e.printStackTrace();
         }
         return res;
+    }
+
+    private void setupAlarm(){
+        boolean enabled = PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(getString(R.string.enable_notif_key), false);
+        if(enabled) {
+            AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(getContext().ALARM_SERVICE);
+            Intent intent = new Intent(getContext(), AlarmReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), REQUEST_ALARM, intent, 0);
+
+            int before = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(getContext()).getString(getString(R.string.notif_key), "30"));
+            int millis = before * 60 * 1000; //minutes -> millis
+            long target = newParking.getExpiration() - millis;
+            Log.d("Alarm", "Setting alarm to " + target);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, target, pendingIntent);
+        }
     }
 }

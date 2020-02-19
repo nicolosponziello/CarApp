@@ -56,12 +56,15 @@ public class CurrentParkingFragment extends Fragment {
 
         if(parkingData.getPhotoPath() == null){
             Log.d("Photo", "error");
-        }
-        Log.d("Photo", parkingData.getPhotoPath());
-        File f = new File(parkingData.getPhotoPath());
-        Uri uri = Uri.fromFile(f);
+        }else{
+            Log.d("Photo", parkingData.getPhotoPath());
+            File f = new File(parkingData.getPhotoPath());
+            Uri uri = Uri.fromFile(f);
 
-        photoCard.setImageURI(uri);
+            photoCard.setImageURI(uri);
+        }
+
+
 
         card.setOnClickListener(v -> {
             //open details

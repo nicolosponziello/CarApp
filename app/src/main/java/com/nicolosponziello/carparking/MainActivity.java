@@ -20,6 +20,7 @@ import com.nicolosponziello.carparking.fragments.CurrentParkingFragment;
 import com.nicolosponziello.carparking.fragments.NoPosFragment;
 import com.nicolosponziello.carparking.intro.IntroActivity;
 import com.nicolosponziello.carparking.model.ParkManager;
+import com.nicolosponziello.carparking.notification.ParkingNotification;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         setupFragments();
+
+        //setup channel for notification
+        ParkingNotification.createChannel(this);
 
     }
 
