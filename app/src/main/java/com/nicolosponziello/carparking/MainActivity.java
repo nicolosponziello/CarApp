@@ -88,10 +88,10 @@ public class MainActivity extends AppCompatActivity {
         if(ParkManager.getInstance(this).hasActiveParking()){
             FragmentManager fragmentManager = getSupportFragmentManager();
             Log.d("Data", "has active");
-            fragmentManager.beginTransaction().add(R.id.current_pos_fragment, new CurrentParkingFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.current_pos_fragment, new CurrentParkingFragment()).commit();
         }else{
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().add(R.id.current_pos_fragment, new NoPosFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.current_pos_fragment, new NoPosFragment()).commit();
         }
     }
 }

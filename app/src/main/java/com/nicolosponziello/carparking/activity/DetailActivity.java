@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,6 +38,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
     private ImageView photoView;
 
     private ImageButton closeBtn;
+    private Button deleteBtn;
 
     private ParkingData parkingData;
     @Override
@@ -57,6 +59,8 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         costLabel = findViewById(R.id.costValue);
         photoView = findViewById(R.id.photoView);
         closeBtn = findViewById(R.id.closeBtn);
+        deleteBtn = findViewById(R.id.deleteBtn);
+
         closeBtn.setOnClickListener(v -> finish());
 
         Bundle extras = getIntent().getExtras();
@@ -144,8 +148,10 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
                 }
             });
         }
-
-
+        deleteBtn.setOnClickListener(v -> {
+            ParkManager.getInstance(this).deleteParkingData(parkingData.getId());
+            finish();
+        });
     }
 
     @Override

@@ -29,7 +29,6 @@ public class ParkManager {
         this.context = c.getApplicationContext();
         database = dbHelper.getWritableDatabase();
         this.parkingData = getParkingData();
-        //this.currentParking = getCurrentParkingFromDB();
     }
 
     public static ParkManager getInstance(Context context) {
@@ -41,6 +40,7 @@ public class ParkManager {
 
     public void addParkingData(ParkingData data){
         ContentValues values = getContentValues(data);
+        this.parkingData.add(data);
         database.insert(DatabaseSchema.ParkTable.TABLE_NAME, null, values);
     }
 
@@ -49,10 +49,6 @@ public class ParkManager {
         ContentValues values = getContentValues(data);
 
         database.update(DatabaseSchema.ParkTable.TABLE_NAME, values, DatabaseSchema.ParkTable.Cols.FIELD_UUID + " = ?", new String[] {targetUUID});
-    }
-
-    public void setParkingData(List<ParkingData> list){
-        this.parkingData = list;
     }
 
     public List<ParkingData> getParkingData() {
@@ -137,6 +133,15 @@ public class ParkManager {
         updateParking(this.currentParking);
 
         this.currentParking = null;
+        this.parkingData = getParkingData();
+    }
+
+
+    public void deleteParkingData(UUID id){
+        if(this.currentParking.getId().equals(id)){
+            this.currentParking = null;
+        }
+        database.delete(DatabaseSchema.ParkTable.TABLE_NAME, DatabaseSchema.ParkTable.Cols.FIELD_UUID + " = ?", new String[]{id.toString()});
         this.parkingData = getParkingData();
     }
 }

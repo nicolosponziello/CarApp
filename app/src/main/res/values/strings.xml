@@ -25,6 +25,7 @@
     <string name="exp_label">Scandenza parcheggio</string>
     <string name="photo_label">Foto</string>
     <string name="map_label">Mappa</string>
+    <string name="delete_btn">Elimina</string>
 
     <string name="activity_detail_title">Dettagli</string>
 
