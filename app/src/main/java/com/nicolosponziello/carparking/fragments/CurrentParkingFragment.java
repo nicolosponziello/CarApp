@@ -81,7 +81,7 @@ public class CurrentParkingFragment extends Fragment {
 
         doneBtn.setOnClickListener(v -> {
             ParkManager.getInstance(getActivity()).setDoneParking();
-            getActivity().getSupportFragmentManager().beginTransaction().remove(getActivity().getSupportFragmentManager().findFragmentById(R.id.current_pos_fragment)).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.current_pos_fragment, new NoPosFragment()).commit();
         });
         return view;
     }
