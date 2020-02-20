@@ -11,7 +11,7 @@
             android:summary="@string/enable_notif_desc"
             android:title="@string/enable_notif_title" />
         <EditTextPreference
-            android:defaultValue="30"
+            android:defaultValue="0"
             android:key="@string/notif_key"
             android:selectAllOnFocus="true"
             android:singleLine="true"
