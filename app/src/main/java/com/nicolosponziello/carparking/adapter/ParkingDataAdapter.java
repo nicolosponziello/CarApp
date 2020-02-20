@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -63,7 +64,7 @@ public class ParkingDataAdapter extends RecyclerView.Adapter<ParkingDataAdapter.
             holder.addressTextView.setVisibility(View.GONE);
         }
 
-        holder.itemView.setOnClickListener(v -> {
+        holder.openDetailsButton.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailActivity.class);
             intent.putExtra(Const.DETAIL_EXTRA, parkingData.getId().toString());
             context.startActivity(intent);
@@ -77,6 +78,7 @@ public class ParkingDataAdapter extends RecyclerView.Adapter<ParkingDataAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView cityTextView, dateTextView, addressTextView;
+        private ImageButton openDetailsButton;
 
         public ViewHolder(View view){
             super(view);
@@ -84,6 +86,7 @@ public class ParkingDataAdapter extends RecyclerView.Adapter<ParkingDataAdapter.
             cityTextView = view.findViewById(R.id.cityItem);
             dateTextView = view.findViewById(R.id.dateItem);
             addressTextView = view.findViewById(R.id.addressItem);
+            openDetailsButton = view.findViewById(R.id.openDetailsButton);
 
         }
     }
