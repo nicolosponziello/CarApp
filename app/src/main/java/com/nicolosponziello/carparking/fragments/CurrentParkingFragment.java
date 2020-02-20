@@ -49,12 +49,12 @@ public class CurrentParkingFragment extends Fragment {
         doneBtn = view.findViewById(R.id.doneBtn);
         goBtn = view.findViewById(R.id.goBtn);
         if(parkingData.getCity() != null && parkingData.getCity() != ""){
-            cityLabel.setText("Città: " + parkingData.getCity());
+            cityLabel.setText(parkingData.getCity());
         }
 
-        addressLabel.setText("Indirizzo: " + parkingData.getAddress());
+        addressLabel.setText(parkingData.getAddress());
 
-        dateLabel.setText("Data: " + Utils.formatDate(parkingData.getDate()));
+        dateLabel.setText(Utils.formatDate(parkingData.getDate()));
 
         if(parkingData.getPhotoPath() == null){
             Log.d("Photo", "error");

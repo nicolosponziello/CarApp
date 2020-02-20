@@ -2,7 +2,7 @@
     <string name="app_name">CarParking</string>
     <string name="no_pos_saved">Nessun parcheggio attivo</string>
     <string name="coordinate_label">Coordinate</string>
-    <string name="address_label">Indirizzo</string>
+    <string name="address_label">Indirizzo:</string>
     <string name="level_label">Piano</string>
     <string name="level_input_hint">piano</string>
     <string name="place_label">Posto</string>

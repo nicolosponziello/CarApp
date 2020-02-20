@@ -303,7 +303,8 @@ public class NewParkFragment extends Fragment {
         }catch(IOException e){
             e.printStackTrace();
         }
-        return res;
+        String[] tmp = res.split(",");
+        return tmp[0] + " " + tmp[1];
     }
 
     private void setupAlarm(){
