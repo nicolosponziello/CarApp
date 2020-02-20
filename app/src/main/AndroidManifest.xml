@@ -50,7 +50,8 @@
         <activity android:name=".activity.NewParkActivity">
 
         </activity>
-        <activity android:name=".activity.FullImageActivity">
+        <activity android:name=".activity.FullImageActivity"
+            android:theme="@style/Theme.AppCompat.Translucent">
 
         </activity>
         <activity android:name=".activity.DetailActivity">
