@@ -5,14 +5,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -24,13 +21,15 @@ import com.nicolosponziello.carparking.model.ParkManager;
 import com.nicolosponziello.carparking.model.ParkingData;
 import com.nicolosponziello.carparking.util.Const;
 import com.nicolosponziello.carparking.util.Utils;
-
 import java.io.File;
 import java.util.Date;
 import java.util.UUID;
 
 import static com.nicolosponziello.carparking.fragments.NewParkFragment.PHOTO_EXTRA;
 
+/**
+ * activity che gestisce la visualizzazione dei dettagli del parking
+ */
 public class DetailActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private TextView cityLabel, dateLabel, coordLabel, addrLabel,
@@ -157,10 +156,15 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         });
     }
 
+    /**
+     * callback che viene chiamata quando la mappa è pronta
+     * @param googleMap
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         double lat = Double.valueOf(parkingData.getLatitude());
         double lon = Double.valueOf(parkingData.getLongitude());
+        //imposta un marker alla posizione del parcheggio
         googleMap.addMarker(new MarkerOptions().position(new LatLng(lat, lon)));
         googleMap.setMyLocationEnabled(true);
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 60));

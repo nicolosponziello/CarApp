@@ -1,5 +1,8 @@
 package com.nicolosponziello.carparking.database;
 
+/**
+ * schema del database dell'applicazione
+ */
 public class DatabaseSchema {
     public static final class ParkTable {
         public static final String TABLE_NAME = "PARKING";

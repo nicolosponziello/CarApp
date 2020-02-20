@@ -3,28 +3,30 @@ package com.nicolosponziello.carparking.intro;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import com.github.paolorotolo.appintro.AppIntro;
-import com.github.paolorotolo.appintro.AppIntro2;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 import com.github.paolorotolo.appintro.model.SliderPage;
 import com.nicolosponziello.carparking.MainActivity;
 import com.nicolosponziello.carparking.R;
 
+/**
+ * intro dell'applicazione creata con la libreria AppIntro
+ */
 public class IntroActivity extends AppIntro {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //prima pagina
         SliderPage page1 = new SliderPage();
         page1.setTitle("Il tuo assistente per gestire i parcheggi!");
         page1.setDescription("Dimentichi dove hai parcheggiato l'auto?\nNon ti ricordi quando scade il parchimetro?");
         page1.setImageDrawable(R.drawable.ic_intro_image_2);
         page1.setBgColor(getColor(R.color.colorPrimaryDark));
 
+        //seconda pagina
         SliderPage page2 = new SliderPage();
         page2.setTitle("Ci penso io!");
         page2.setDescription("Parcheggia senza pensieri! Ci penserò io a condurti alla tua auto!");
@@ -49,6 +51,9 @@ public class IntroActivity extends AppIntro {
         setDone();
     }
 
+    /**
+     * scrivi sulle shared preferences che l'intro è stata mostrata e avvia l'activity principale
+     */
     private void setDone(){
         SharedPreferences preferences = getSharedPreferences(getString(R.string.shared_prefs), Context.MODE_PRIVATE);
         preferences.edit().putBoolean(getString(R.string.intro_shown), true).commit();

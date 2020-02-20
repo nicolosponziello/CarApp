@@ -16,9 +16,11 @@ import com.nicolosponziello.carparking.model.ParkManager;
 import com.nicolosponziello.carparking.model.ParkingData;
 import com.nicolosponziello.carparking.util.Const;
 import com.nicolosponziello.carparking.util.Utils;
-
 import java.util.List;
 
+/**
+ * data adapter per il RecyclerView
+ */
 public class ParkingDataAdapter extends RecyclerView.Adapter<ParkingDataAdapter.ViewHolder> {
 
     private List<ParkingData> data;
@@ -29,17 +31,29 @@ public class ParkingDataAdapter extends RecyclerView.Adapter<ParkingDataAdapter.
         data = dataList;
     }
 
+    /**
+     * chiamata quando viene creato un view holder
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
+        //imposta il layout dell'item
         View parkingView = inflater.inflate(R.layout.list_item, parent, false);
 
         return new ViewHolder(parkingView);
     }
 
+    /**
+     * chiamata quando si esegue il bind della view ai dati
+     * @param holder
+     * @param position posizione dell'oggetto nella lista dei dati
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ParkingData parkingData = this.data.get(position);
@@ -74,6 +88,9 @@ public class ParkingDataAdapter extends RecyclerView.Adapter<ParkingDataAdapter.
         return data.size();
     }
 
+    /**
+     * classe che gestisce ("trattiene") la view dell'item
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView cityTextView, dateTextView, addressTextView;
         private ImageButton openDetailsButton;
@@ -89,8 +106,10 @@ public class ParkingDataAdapter extends RecyclerView.Adapter<ParkingDataAdapter.
         }
     }
 
+    /**
+     * necessario per aggiornare la lista dei dati e quindi gli item del recycler view
+     */
     public void reloadData(){
-        Log.d("data", "reloading");
         this.data = ParkManager.getInstance(context).getParkingData();
     }
 }

@@ -25,6 +25,9 @@ import com.nicolosponziello.carparking.util.Const;
 import com.nicolosponziello.carparking.util.Utils;
 import java.io.File;
 
+/**
+ * fragment che contiene lo stato del parcheggio corrente
+ */
 public class CurrentParkingFragment extends Fragment {
 
     private MaterialCardView card;
@@ -49,6 +52,8 @@ public class CurrentParkingFragment extends Fragment {
         doneBtn = view.findViewById(R.id.doneBtn);
         goBtn = view.findViewById(R.id.goBtn);
         shareBtn = view.findViewById(R.id.shareBtn);
+
+        //imposta le textview
         if(parkingData.getCity() != null && parkingData.getCity() != ""){
             cityLabel.setText(parkingData.getCity());
         }
@@ -57,28 +62,25 @@ public class CurrentParkingFragment extends Fragment {
 
         dateLabel.setText(Utils.formatDate(parkingData.getDate()));
 
+        //se non è stata impostata una foto nascondi l'image view
         if(parkingData.getPhotoPath() == null){
-            Log.d("Photo", "error");
             photoCard.setVisibility(View.GONE);
         }else{
-            Log.d("Photo", parkingData.getPhotoPath());
             File f = new File(parkingData.getPhotoPath());
             Uri uri = Uri.fromFile(f);
-
             photoCard.setImageURI(uri);
         }
 
 
-
         card.setOnClickListener(v -> {
-            //open details
+            //apri i dettagli
             Intent intent = new Intent(getActivity(), DetailActivity.class);
             intent.putExtra(Const.DETAIL_EXTRA, parkingData.getId().toString());
             startActivity(intent);
         });
 
         goBtn.setOnClickListener(v -> {
-            //start navigation
+            //apri google map in modalità navigazione a piedi
             Uri activityUri = Uri.parse("google.navigation:q=" + parkingData.getLatitude()+","+parkingData.getLongitude() +
                     "&mode=w");
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, activityUri);
@@ -87,18 +89,22 @@ public class CurrentParkingFragment extends Fragment {
         });
 
         doneBtn.setOnClickListener(v -> {
+            //imposta il parcheggio come completato e aggiorna la view
             ParkManager.getInstance(getActivity()).setDoneParking();
             ((MainActivity) getActivity()).setupView();
             NotifManager.getInstance().stopAlarm();
         });
 
         shareBtn.setOnClickListener(v -> {
+            //condividi un link a maps con le coordinate impostate
             Uri toShareData = Utils.getMapsUrlFromLocation(Double.valueOf(parkingData.getLatitude()), Double.valueOf(parkingData.getLongitude()));
+
             Intent shareIntent = new Intent();
             shareIntent.setAction(Intent.ACTION_SEND);
             shareIntent.putExtra(Intent.EXTRA_TEXT, toShareData.toString());
-            shareIntent.setType("text/plain");
+            shareIntent.setType("text/plain"); //specifica il tipo di dato condiviso
 
+            //apre il chooser per la condivisione
             Intent send = Intent.createChooser(shareIntent, null);
             startActivity(send);
         });
@@ -108,6 +114,5 @@ public class CurrentParkingFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 }

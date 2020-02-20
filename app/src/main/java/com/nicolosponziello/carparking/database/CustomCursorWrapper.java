@@ -3,12 +3,14 @@ package com.nicolosponziello.carparking.database;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 import com.nicolosponziello.carparking.database.DatabaseSchema.ParkTable;
-
 import com.nicolosponziello.carparking.model.ParkingData;
-
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * wrapper per un cursore del database, in grado di ritornare un oggetto completo del model
+ * segue il pattern decorator
+ */
 public class CustomCursorWrapper extends CursorWrapper {
 
     public CustomCursorWrapper(Cursor cursor) {

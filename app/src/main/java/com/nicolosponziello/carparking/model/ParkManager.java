@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Manager con pattern singleton per gestire i dati dei parcheggi nell'applicazione
+ */
 public class ParkManager {
 
     private static ParkManager instance;
@@ -38,12 +41,21 @@ public class ParkManager {
         return instance;
     }
 
+    /**
+     * aggiunge un nuovo pezzo di dati
+     * @param data
+     */
     public void addParkingData(ParkingData data){
+        //i content values permettono di gestire più agilmente la scrittura su database
         ContentValues values = getContentValues(data);
         this.parkingData.add(data);
         database.insert(DatabaseSchema.ParkTable.TABLE_NAME, null, values);
     }
 
+    /**
+     * aggiorna sul database l'istanza passata come argomento
+     * @param data
+     */
     public void updateParking(ParkingData data){
         String targetUUID = data.getId().toString();
         ContentValues values = getContentValues(data);
@@ -51,6 +63,10 @@ public class ParkManager {
         database.update(DatabaseSchema.ParkTable.TABLE_NAME, values, DatabaseSchema.ParkTable.Cols.FIELD_UUID + " = ?", new String[] {targetUUID});
     }
 
+    /**
+     * leggi dal database tutti i dati salvati
+     * @return lista dei parking data
+     */
     public List<ParkingData> getParkingData() {
         List<ParkingData> tmp = new ArrayList<>();
         CustomCursorWrapper cursor = queryParking(null, null);
@@ -72,6 +88,11 @@ public class ParkManager {
         return tmp;
     }
 
+    /**
+     * ottieni uno specifo ParkingData in base all'UUID
+     * @param id del parking data da trovare
+     * @return il parking data o null
+     */
     public ParkingData getParkingData(UUID id){
         Log.d("app", "looking for " + id.toString());
         for(ParkingData data : parkingData) {
@@ -96,6 +117,11 @@ public class ParkManager {
         return this.currentParking != null;
     }
 
+    /**
+     * crea il contentvalues del parking data
+     * @param data
+     * @return content values
+     */
     private static ContentValues getContentValues(ParkingData data) {
         ContentValues values = new ContentValues();
         values.put(DatabaseSchema.ParkTable.Cols.FIELD_ACTIVE, data.isActive());
@@ -115,6 +141,12 @@ public class ParkManager {
         return values;
     }
 
+    /**
+     * crea un cursor per l'elaborazione dei risultati di una query sul database
+     * @param where
+     * @param whereArgs
+     * @return
+     */
     private CustomCursorWrapper queryParking(String where, String[] whereArgs){
         Cursor cursor = database.query(
                 DatabaseSchema.ParkTable.TABLE_NAME,

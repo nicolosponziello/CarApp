@@ -5,6 +5,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.nicolosponziello.carparking.database.DatabaseSchema.ParkTable;
 
+/**
+ * helper per l'accesso al database
+ */
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "database.db";
     private Context context;
@@ -17,6 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        //crea il database se non presente
         String query = "create table " + ParkTable.TABLE_NAME +
                 " ( _id integer primary key autoincrement," +
                 ParkTable.Cols.FIELD_ACTIVE + ", " +

@@ -1,19 +1,14 @@
 package com.nicolosponziello.carparking.activity;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
-import android.util.Log;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -25,14 +20,14 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.nicolosponziello.carparking.R;
 import com.nicolosponziello.carparking.fragments.NewParkFragment;
-import com.nicolosponziello.carparking.model.ParkManager;
 
+/**
+ * activity che permette di salvare una nuova posizione del parcheggio
+ */
 public class NewParkActivity extends AppCompatActivity {
 
     public static final String BUNDLE_LAT = "LAT";
     public static final String BUNDLE_LONG = "LONG";
-
-    private static final int EXTERNAL_STORAGE_PERMISSION = 2;
 
     private FusedLocationProviderClient locationProviderClient;
 
@@ -44,15 +39,16 @@ public class NewParkActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         locationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
-
+        //controlla che la localizzazione sia attiva nel telefono
         if(isLocationEnabled()){
+            //ottieni l'ultima posizione utile
             Task<Location> locationTask = locationProviderClient.getLastLocation();
             locationTask.addOnSuccessListener(this, new OnSuccessListener<Location>() {
 
                 @Override
                 public void onSuccess(Location location) {
                     if(location != null){
-                        Log.d("CarParking", String.valueOf(location.getLatitude() + " " + location.getLongitude()));
+                        //posizione recente ottenuta con successo
                         Bundle bundle = new Bundle();
                         bundle.putString(BUNDLE_LAT, String.valueOf(location.getLatitude()));
                         bundle.putString(BUNDLE_LONG, String.valueOf(location.getLongitude()));
@@ -65,9 +61,10 @@ public class NewParkActivity extends AppCompatActivity {
                 }
             });
         }else{
-            //ask user to enable location in settings
+            //apri le impostazioni per attivare la localizzazione
             startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-            }
+            finish();
+        }
     }
 
     private boolean isLocationEnabled(){
@@ -75,6 +72,9 @@ public class NewParkActivity extends AppCompatActivity {
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
+    /**
+     * crea una nuova richiesta di localizzazione ed eseguila
+     */
     private void requestNewLocation(){
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -82,9 +82,13 @@ public class NewParkActivity extends AppCompatActivity {
         locationRequest.setNumUpdates(1);
         locationRequest.setFastestInterval(0);
 
+        //un solo update
         locationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
     }
 
+    /**
+     * callback eseguita quando la richiesta di localizzazione termina
+     */
     private LocationCallback locationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {

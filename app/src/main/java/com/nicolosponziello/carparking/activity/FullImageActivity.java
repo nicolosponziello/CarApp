@@ -9,9 +9,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.nicolosponziello.carparking.R;
 import com.nicolosponziello.carparking.fragments.NewParkFragment;
-
 import java.io.File;
 
+/**
+ * activity che mostra un'immagine a fullscreen con sfondo trasparente
+ */
 public class FullImageActivity extends AppCompatActivity {
 
     private ImageView imageView;

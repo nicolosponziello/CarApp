@@ -1,13 +1,12 @@
 package com.nicolosponziello.carparking.model;
 
-import android.media.Image;
 import android.util.Log;
-
-import java.sql.Blob;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * classe che gestisce i dati di un parcheggio salvato
+ */
 public class ParkingData {
 
     private String address;

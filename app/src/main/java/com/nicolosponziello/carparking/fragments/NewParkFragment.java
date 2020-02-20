@@ -3,19 +3,15 @@ package com.nicolosponziello.carparking.fragments;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,31 +24,19 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
-
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.nicolosponziello.carparking.R;
 import com.nicolosponziello.carparking.activity.FullImageActivity;
 import com.nicolosponziello.carparking.activity.NewParkActivity;
 import com.nicolosponziello.carparking.model.ParkManager;
 import com.nicolosponziello.carparking.model.ParkingData;
 import com.nicolosponziello.carparking.notification.NotifManager;
-import com.nicolosponziello.carparking.receivers.AlarmReceiver;
-
 import java.io.File;
-import java.io.IOError;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
@@ -60,8 +44,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
-
+/**
+ * fragment per creare un nuovo parcheggio
+ */
 public class NewParkFragment extends Fragment {
 
     private static final int REQUEST_PHOTO = 2;
@@ -106,6 +91,7 @@ public class NewParkFragment extends Fragment {
         costInput = view.findViewById(R.id.costValue);
         noteInput = view.findViewById(R.id.noteValue);
 
+        //di default nascondi il parchimetro
         parkimeterLayout.setVisibility(View.GONE);
         parkimeterSwitch.setOnCheckedChangeListener((v, checked)->{
             if(checked){
@@ -116,14 +102,16 @@ public class NewParkFragment extends Fragment {
         });
         coordinateValue = view.findViewById(R.id.coordinateValue);
 
-
+        //ottieni le coordinate dall'intent
         lat = getArguments().getString(NewParkActivity.BUNDLE_LAT);
         lon = getArguments().getString(NewParkActivity.BUNDLE_LONG);
         coordinateValue.setText("( " + lat + " ; " + lon + " )");
 
+        //crea un nuovo pezzo di dati ParkingData
         newParking = new ParkingData();
         newParking.setId(UUID.randomUUID());
 
+        //bottone per aprire la fotocamera
         addPhotoBtn.setOnClickListener(v -> {
             if(!hasStoragePermission()){
                 requestStoragePermission();
@@ -131,7 +119,8 @@ public class NewParkFragment extends Fragment {
                 takePicture();
             }
         });
-        //show dialog to setup exp time
+
+        //mostra il dialog per la scadenza
         addTimeBtn.setOnClickListener(v ->{
             Calendar calendar = Calendar.getInstance();
             TimePickerDialog.OnTimeSetListener listener = new TimePickerDialog.OnTimeSetListener() {
@@ -150,6 +139,7 @@ public class NewParkFragment extends Fragment {
         });
 
         photoView.setOnClickListener(v -> {
+            //se è stato impostato un path per il file della foto salvato, al click della foto mostrala su una activity più grande
             if(photoFilePath != null && photoFilePath != ""){
                 Intent intent = new Intent(getContext(), FullImageActivity.class);
                 intent.putExtra(PHOTO_EXTRA, photoFilePath);
@@ -161,10 +151,13 @@ public class NewParkFragment extends Fragment {
 
         //cancel btn
         cancelBtn.setOnClickListener(v -> {
+            //annulla tutto
             getActivity().finish();
         });
-        //save btn
+
+        //salva
         saveBtn.setOnClickListener(v -> {
+            //controlla quali dati sono stati messi dall'utente
             if(noteInput.getText().length() > 0){
                 note = noteInput.getText().toString();
                 newParking.setNote(note);
@@ -173,6 +166,7 @@ public class NewParkFragment extends Fragment {
                 address = addressInput.getText().toString();
                 newParking.setAddress(address);
             }else{
+                //ottieni indirizzo automaticamente
                 address = getAddressFromCoord(Double.valueOf(lat), Double.valueOf(lon));
                 newParking.setAddress(address);
             }
@@ -199,21 +193,25 @@ public class NewParkFragment extends Fragment {
             newParking.setLongitude(lon);
             newParking.setLatitude(lat);
             newParking.setDate(new Date());
-
-
             newParking.setActive(true);
             newParking.setPhotoPath(photoFilePath);
+            //ottieni la città automaticamente
             newParking.setCity(getCityFromCoord(Float.valueOf(lat), Float.valueOf(lon)));
 
             ParkManager.getInstance(getActivity()).addParkingData(newParking);
             ParkManager.getInstance(getActivity()).setCurrentParking(newParking);
-            Log.d("DATA", newParking.toString());
 
             getActivity().finish();
         });
         return view;
     }
 
+    /**
+     * crea un file immagine temporaneo in cui salvare la foto ottenuta dalla fotocamera
+     * @param id
+     * @return file temporaneo
+     * @throws IOException
+     */
     private File createImageFile(UUID id) throws IOException {
         String imageName = id.toString();
         File dir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
@@ -226,17 +224,23 @@ public class NewParkFragment extends Fragment {
         return image;
     }
 
+    /**
+     * apri la fotocamera per ottenere una foto
+     */
     private void takePicture(){
         Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if(pictureIntent.resolveActivity(getActivity().getPackageManager()) != null){
             File photoFile = null;
             try {
+                //crea nuovo file temporaneo
                 photoFile = createImageFile(newParking.getId());
             }catch (IOException e){
                 Log.d("CarParking", "Error creating temp file");
             }
             if(photoFile != null){
+                //usa il FileProvider per ottenere l'uri del file temporaneo
                 Uri photoUri = FileProvider.getUriForFile(getActivity(), "com.nicolosponziello.android.carparking.fileprovider", photoFile);
+                //aggiorna l'image view per mostrare la foto ottenuta tramite result
                 pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                 photoFilePath = photoFile.getAbsolutePath();
                 startActivityForResult(pictureIntent, REQUEST_PHOTO);
@@ -244,6 +248,12 @@ public class NewParkFragment extends Fragment {
         }
     }
 
+    /**
+     * chiamata quando si risponde alla richiesta del permesso per lo storage esterno in cui salvare le foto
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -267,6 +277,12 @@ public class NewParkFragment extends Fragment {
         requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION);
     }
 
+    /**
+     * chiamata quando termina l'activity della fotocamera per ottenere la foto
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == REQUEST_PHOTO){
@@ -278,6 +294,12 @@ public class NewParkFragment extends Fragment {
         }
     }
 
+    /**
+     * ottieni la città tramite il Geocoder
+     * @param lat
+     * @param lon
+     * @return
+     */
     private String getCityFromCoord(float lat, float lon){
         Geocoder geocoder = new Geocoder(getActivity(), Locale.ITALY);
         String res = null;
@@ -292,6 +314,12 @@ public class NewParkFragment extends Fragment {
         return res;
     }
 
+    /**
+     * Ottieni l'indirizzo automaticamente
+     * @param lat
+     * @param lon
+     * @return
+     */
     private String getAddressFromCoord(double lat, double lon){
         Geocoder geocoder = new Geocoder(getActivity(), Locale.ITALY);
         String res = null;
@@ -304,9 +332,13 @@ public class NewParkFragment extends Fragment {
             e.printStackTrace();
         }
         String[] tmp = res.split(",");
+        //solo via e numero civico
         return tmp[0] + " " + tmp[1];
     }
 
+    /**
+     * quando si salva la posizione avvia un'allarme per una notifica di scadenza parcheggio
+     */
     private void setupAlarm(){
         boolean enabled = PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(getString(R.string.enable_notif_key), false);
         if(enabled) {

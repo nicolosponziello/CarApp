@@ -1,11 +1,9 @@
 package com.nicolosponziello.carparking.activity;
 
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +14,9 @@ import com.nicolosponziello.carparking.R;
 import com.nicolosponziello.carparking.adapter.ParkingDataAdapter;
 import com.nicolosponziello.carparking.model.ParkManager;
 
+/**
+ * activity che mostra lo storico dei parcheggi salvati
+ */
 public class HistoryActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
@@ -32,11 +33,12 @@ public class HistoryActivity extends AppCompatActivity {
         noDataView = findViewById(R.id.noDataHistory);
         toolbar = findViewById(R.id.toolbar3);
 
+        //imposta la toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.history_activity_title));
 
-
+        //imposta il recyclerview
         adapter = new ParkingDataAdapter(ParkManager.getInstance(this).getParkingData(), this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -54,6 +56,9 @@ public class HistoryActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * refresh dei dati quando l'activity è riavviata
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -63,6 +68,9 @@ public class HistoryActivity extends AppCompatActivity {
         setupView();
     }
 
+    /**
+     * imposta la view
+     */
     private void setupView(){
         if(adapter.getItemCount() == 0){
             noDataView.setVisibility(View.VISIBLE);

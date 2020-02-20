@@ -7,21 +7,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
-
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.Toast;
-
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.nicolosponziello.carparking.activity.AboutActivity;
@@ -59,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //hamburgher setup
         toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);
         toggle.setDrawerIndicatorEnabled(true);
         toggle.syncState();
@@ -68,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         navigationView = findViewById(R.id.lateralMenu);
+        //imposta le callback per il menu del drawer
         navigationView.setNavigationItemSelectedListener( item -> {
             drawerLayout.closeDrawers();
             switch (item.getItemId()){
@@ -88,11 +83,13 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.shared_prefs), Context.MODE_PRIVATE);
         boolean introShown = sharedPreferences.getBoolean(getString(R.string.intro_shown), false);
+        //se l'intro non è mai stata mostrata (es. primo avvio) mostra l'activity
         if(!introShown){
             startActivity(new Intent(this, IntroActivity.class));
         }
 
         fabNewButton.setOnClickListener((v -> {
+            //se l'app non ha i permessi di localizzazione, chiedili prima di attivate l'intent
             if(!hasLocationPermissions()){
                 requesLocationPermissions();
             }else{
@@ -100,10 +97,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }));
 
-
+        //setup view
         setupView();
 
-        //setup channel for notification
+        //setup channel per notifiche
         ParkingNotification.createChannel(this);
 
     }
@@ -111,9 +108,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        //aggiorna la view
         setupView();
     }
 
+    /**
+     * callback del lifecycle per la creazione della toolbar
+     * @param menu
+     * @return true/false
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -121,6 +124,11 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * chiamata quando si fa click sugli item del menù della toolbar
+     * @param item specifico item
+     * @return true o false
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(toggle.onOptionsItemSelected(item)){
@@ -138,6 +146,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * chimata quando la richiesta dei permessi è completata
+     * @param requestCode identifica la richiesta
+     * @param permissions permessi
+     * @param grantResults risultati per ogni permesso
+     */
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode == FINE_LOCATION_PERMISSION){
@@ -148,15 +162,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Imposta la schermata in base ai dati di ParkManager
+     */
     public void setupView(){
         if(ParkManager.getInstance(this).hasActiveParking()){
             FragmentManager fragmentManager = getSupportFragmentManager();
-            Log.d("Data", "has active");
             fragmentManager.beginTransaction().replace(R.id.current_pos_fragment, new CurrentParkingFragment()).commit();
         }else{
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.current_pos_fragment, new NoPosFragment()).commit();
         }
+        //hide fab button if a parking is active
         if(ParkManager.getInstance(this).hasActiveParking()){
             fabNewButton.hide();
         }else{
@@ -164,14 +181,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * controlla che l'utente abbia dato i permessi di localizzazione all'applicazione
+     * @return true se concessi, false altrimenti
+     */
     private boolean hasLocationPermissions(){
         if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
             return true;
         }
         return false;
     }
 
+    /**
+     * richiede il permesso per la localizzazione FINE (più precisa di COARSE)
+     */
     private void requesLocationPermissions(){
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, FINE_LOCATION_PERMISSION);
     }

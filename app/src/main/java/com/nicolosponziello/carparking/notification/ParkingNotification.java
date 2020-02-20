@@ -7,19 +7,24 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-
 import androidx.core.app.NotificationCompat;
-
 import com.nicolosponziello.carparking.MainActivity;
 import com.nicolosponziello.carparking.R;
 import com.nicolosponziello.carparking.util.Const;
 
+/**
+ * classe per la creazione delle notifiche
+ */
 public class ParkingNotification {
 
     private NotificationChannel channel;
 
+    /**
+     * inizializza un channel per l'invio delle notifiche
+     * @param context contesto
+     */
     public static void createChannel(Context context){
-        /* check if device has api26+  because the notification channel is not on below apis*/
+        //esegui la funzione solo se le api sono 26+, sotto non esiste il channel
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             CharSequence name = context.getString(R.string.notif_channel_name);
             String desc = context.getString(R.string.notif_channel_desc);
@@ -27,12 +32,17 @@ public class ParkingNotification {
             NotificationChannel channel = new NotificationChannel(Const.NOTIF_CHANNEL_ID, name, importance);
             channel.setDescription(desc);
 
-            //register the channel
+            //registra il channel
             NotificationManager manager = context.getSystemService(NotificationManager.class);
             manager.createNotificationChannel(channel);
         }
     }
 
+    /**
+     * istanzia una nuova notifica utilizzando il builder
+     * @param context
+     * @return
+     */
     public static Notification createExpirationNotification(Context context){
         Intent intent = new Intent(context, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
