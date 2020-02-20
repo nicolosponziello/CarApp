@@ -41,6 +41,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="10sp"
+                android:layout_marginBottom="20sp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -48,7 +50,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="20sp"
                     android:gravity="center"
                     android:text="@string/current_parking_title"
                     android:textSize="24sp" />
@@ -60,8 +61,7 @@
                 android:layout_height="200dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="20sp"
-                android:layout_marginBottom="20sp"
-                card_view:srcCompat="@android:drawable/ic_lock_lock" />
+                android:layout_marginBottom="20sp" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -132,7 +132,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/done_btn"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@android:color/holo_green_dark" />
 
                 <ImageButton
                     android:id="@+id/goBtn"
@@ -140,8 +141,8 @@
                     android:layout_width="40dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:backgroundTint="#00FFFFFF"
-                    card_view:srcCompat="@drawable/ic_arrow_forward_white" />
+                    android:background="@null"
+                    card_view:srcCompat="@drawable/ic_nav_button" />
             </LinearLayout>
 
         </LinearLayout>
