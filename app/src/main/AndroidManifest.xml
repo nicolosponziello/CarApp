@@ -83,8 +83,18 @@
 
         <service
             android:name=".tile.CarParkingTileService"
+            android:icon="@drawable/ic_nav_tile"
+            android:label="Naviga"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name=".tile.NewPositionTileService"
             android:icon="@drawable/parking_tile_icon"
-            android:label="Parcheggio"
+            android:label="Salva parcheggio"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
 
             <intent-filter>
