@@ -8,10 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.nicolosponziello.carparking.R;
 import com.nicolosponziello.carparking.activity.DetailActivity;
 import com.nicolosponziello.carparking.model.ParkManager;
