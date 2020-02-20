@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
         navigationView = findViewById(R.id.lateralMenu);
         navigationView.setNavigationItemSelectedListener( item -> {
+            drawerLayout.closeDrawers();
             switch (item.getItemId()){
                 case R.id.homeItem:
                     break;
