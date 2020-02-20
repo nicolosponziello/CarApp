@@ -31,7 +31,7 @@ public class CurrentParkingFragment extends Fragment {
     private ParkingData parkingData;
     private TextView cityLabel, addressLabel, dateLabel;
     private ImageView photoCard;
-    private ImageButton goBtn;
+    private ImageButton goBtn, shareBtn;
     private Button doneBtn;
 
     @Nullable
@@ -48,6 +48,7 @@ public class CurrentParkingFragment extends Fragment {
         photoCard = view.findViewById(R.id.currentPhotoCard);
         doneBtn = view.findViewById(R.id.doneBtn);
         goBtn = view.findViewById(R.id.goBtn);
+        shareBtn = view.findViewById(R.id.shareBtn);
         if(parkingData.getCity() != null && parkingData.getCity() != ""){
             cityLabel.setText(parkingData.getCity());
         }
@@ -89,6 +90,17 @@ public class CurrentParkingFragment extends Fragment {
             ParkManager.getInstance(getActivity()).setDoneParking();
             ((MainActivity) getActivity()).setupView();
             NotifManager.getInstance().stopAlarm();
+        });
+
+        shareBtn.setOnClickListener(v -> {
+            Uri toShareData = Utils.getMapsUrlFromLocation(Double.valueOf(parkingData.getLatitude()), Double.valueOf(parkingData.getLongitude()));
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, toShareData.toString());
+            shareIntent.setType("text/plain");
+
+            Intent send = Intent.createChooser(shareIntent, null);
+            startActivity(send);
         });
         return view;
     }
