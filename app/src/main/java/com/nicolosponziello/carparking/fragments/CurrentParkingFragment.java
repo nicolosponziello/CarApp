@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.card.MaterialCardView;
+import com.nicolosponziello.carparking.MainActivity;
 import com.nicolosponziello.carparking.R;
 import com.nicolosponziello.carparking.activity.DetailActivity;
 import com.nicolosponziello.carparking.model.ParkManager;
@@ -86,7 +87,7 @@ public class CurrentParkingFragment extends Fragment {
 
         doneBtn.setOnClickListener(v -> {
             ParkManager.getInstance(getActivity()).setDoneParking();
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.current_pos_fragment, new NoPosFragment()).commit();
+            ((MainActivity) getActivity()).setupView();
             NotifManager.getInstance().stopAlarm();
         });
         return view;

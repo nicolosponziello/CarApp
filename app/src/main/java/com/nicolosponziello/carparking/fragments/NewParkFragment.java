@@ -1,5 +1,6 @@
 package com.nicolosponziello.carparking.fragments;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
@@ -30,6 +31,7 @@ import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -58,10 +60,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 public class NewParkFragment extends Fragment {
 
     private static final int REQUEST_PHOTO = 2;
     public static final String PHOTO_EXTRA = "photo_extra";
+    private static final int EXTERNAL_STORAGE_PERMISSION = 2;
 
     private TextView coordinateValue;
     private ImageView photoView;
@@ -110,6 +115,8 @@ public class NewParkFragment extends Fragment {
             }
         });
         coordinateValue = view.findViewById(R.id.coordinateValue);
+
+
         lat = getArguments().getString(NewParkActivity.BUNDLE_LAT);
         lon = getArguments().getString(NewParkActivity.BUNDLE_LONG);
         coordinateValue.setText("( " + lat + " ; " + lon + " )");
@@ -118,20 +125,10 @@ public class NewParkFragment extends Fragment {
         newParking.setId(UUID.randomUUID());
 
         addPhotoBtn.setOnClickListener(v -> {
-            Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            if(pictureIntent.resolveActivity(getActivity().getPackageManager()) != null){
-                File photoFile = null;
-                try {
-                    photoFile = createImageFile(newParking.getId());
-                }catch (IOException e){
-                    Log.d("CarParking", "Error creating temp file");
-                }
-                if(photoFile != null){
-                    Uri photoUri = FileProvider.getUriForFile(getActivity(), "com.nicolosponziello.android.carparking.fileprovider", photoFile);
-                    pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                    photoFilePath = photoFile.getAbsolutePath();
-                    startActivityForResult(pictureIntent, REQUEST_PHOTO);
-                }
+            if(!hasStoragePermission()){
+                requestStoragePermission();
+            }else{
+                takePicture();
             }
         });
         //show dialog to setup exp time
@@ -174,6 +171,9 @@ public class NewParkFragment extends Fragment {
             }
             if(addressInput.getText().length() > 0) {
                 address = addressInput.getText().toString();
+                newParking.setAddress(address);
+            }else{
+                address = getAddressFromCoord(Double.valueOf(lat), Double.valueOf(lon));
                 newParking.setAddress(address);
             }
             if(levelInput.getText().length() > 0) {
@@ -226,6 +226,47 @@ public class NewParkFragment extends Fragment {
         return image;
     }
 
+    private void takePicture(){
+        Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if(pictureIntent.resolveActivity(getActivity().getPackageManager()) != null){
+            File photoFile = null;
+            try {
+                photoFile = createImageFile(newParking.getId());
+            }catch (IOException e){
+                Log.d("CarParking", "Error creating temp file");
+            }
+            if(photoFile != null){
+                Uri photoUri = FileProvider.getUriForFile(getActivity(), "com.nicolosponziello.android.carparking.fileprovider", photoFile);
+                pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                photoFilePath = photoFile.getAbsolutePath();
+                startActivityForResult(pictureIntent, REQUEST_PHOTO);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.d("perm", "onRequestPermissionsResult: ");
+        if(requestCode == EXTERNAL_STORAGE_PERMISSION){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                takePicture();
+            }
+        }
+    }
+
+    private boolean hasStoragePermission(){
+        if(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+            return true;
+        }
+        return false;
+    }
+
+
+    private void requestStoragePermission(){
+        requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == REQUEST_PHOTO){
@@ -244,6 +285,20 @@ public class NewParkFragment extends Fragment {
             List<Address> list = geocoder.getFromLocation(lat, lon, 1);
             if(list.size() > 0){
                 res = list.get(0).getLocality();
+            }
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    private String getAddressFromCoord(double lat, double lon){
+        Geocoder geocoder = new Geocoder(getActivity(), Locale.ITALY);
+        String res = null;
+        try {
+            List<Address> list = geocoder.getFromLocation(lat, lon, 1);
+            if(list.size() > 0){
+                res = list.get(0).getAddressLine(0);
             }
         }catch(IOException e){
             e.printStackTrace();

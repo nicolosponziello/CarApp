@@ -4,15 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
+
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -30,6 +35,8 @@ import com.nicolosponziello.carparking.model.ParkManager;
 import com.nicolosponziello.carparking.notification.ParkingNotification;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final int FINE_LOCATION_PERMISSION = 1;
 
     private FrameLayout posFrame;
     private FrameLayout bottomBar;
@@ -85,11 +92,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         fabNewButton.setOnClickListener((v -> {
-            startActivity(new Intent(this, NewParkActivity.class));
+            if(!hasLocationPermissions()){
+                requesLocationPermissions();
+            }else{
+                startActivity(new Intent(this, NewParkActivity.class));
+            }
         }));
 
 
-        setupFragments();
+        setupView();
 
         //setup channel for notification
         ParkingNotification.createChannel(this);
@@ -99,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setupFragments();
+        setupView();
     }
 
     @Override
@@ -126,7 +137,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setupFragments(){
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == FINE_LOCATION_PERMISSION){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //we have the best permission for localization
+                startActivity(new Intent(this, NewParkActivity.class));
+            }
+        }
+    }
+
+    public void setupView(){
         if(ParkManager.getInstance(this).hasActiveParking()){
             FragmentManager fragmentManager = getSupportFragmentManager();
             Log.d("Data", "has active");
@@ -135,5 +156,22 @@ public class MainActivity extends AppCompatActivity {
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.current_pos_fragment, new NoPosFragment()).commit();
         }
+        if(ParkManager.getInstance(this).hasActiveParking()){
+            fabNewButton.hide();
+        }else{
+            fabNewButton.show();
+        }
+    }
+
+    private boolean hasLocationPermissions(){
+        if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            return true;
+        }
+        return false;
+    }
+
+    private void requesLocationPermissions(){
+        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, FINE_LOCATION_PERMISSION);
     }
 }
