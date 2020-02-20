@@ -23,7 +23,7 @@ public class CarParkingTileService extends TileService {
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, activityUri);
             mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mapIntent.setPackage("com.google.android.apps.maps");
-            getApplicationContext().startActivity(mapIntent);
+            startActivityAndCollapse(mapIntent);
         }
     }
 

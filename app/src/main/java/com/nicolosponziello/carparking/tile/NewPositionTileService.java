@@ -4,10 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
-
-import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-
 import com.nicolosponziello.carparking.activity.NewParkActivity;
 import com.nicolosponziello.carparking.model.ParkManager;
 
@@ -30,7 +27,7 @@ public class NewPositionTileService extends TileService {
     public void onClick() {
         Intent intent = new Intent(getApplicationContext(), NewParkActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        getApplication().startActivity(intent);
+        startActivityAndCollapse(intent);
 
     }
 
