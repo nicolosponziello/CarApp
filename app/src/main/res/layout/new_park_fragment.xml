@@ -20,10 +20,12 @@
             android:background="@color/cardview_dark_background"/>
 
         <ImageButton
+            android:id="@+id/addPhotoBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/addPhotoBtn"
-            android:src="@android:drawable/ic_menu_camera"/>
+            android:background="@null"
+            android:padding="10sp"
+            android:src="@drawable/ic_add_photo_icon" />
 
     </LinearLayout>
 
