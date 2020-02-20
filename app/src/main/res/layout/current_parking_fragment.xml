@@ -11,9 +11,13 @@
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
+        android:paddingTop="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:layout_margin="10dp"
         card_view:cardCornerRadius="4dp"
+
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:elevation="10dp">
 
         <LinearLayout
@@ -31,7 +35,7 @@
                     android:id="@+id/shareBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@null"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     card_view:layout_constraintEnd_toEndOf="parent"
                     card_view:layout_constraintTop_toTopOf="parent"
                     card_view:srcCompat="@drawable/ic_share" />
@@ -141,7 +145,7 @@
                     android:layout_width="40dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@null"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     card_view:srcCompat="@drawable/ic_nav_button" />
             </LinearLayout>
 

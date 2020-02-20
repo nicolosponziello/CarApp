@@ -22,7 +22,7 @@
                 style="@android:style/Widget.Material.ImageButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@null"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_close"
                 tools:src="" />
         </LinearLayout>
