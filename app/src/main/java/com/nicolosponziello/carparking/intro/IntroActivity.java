@@ -15,7 +15,6 @@ import com.nicolosponziello.carparking.MainActivity;
 import com.nicolosponziello.carparking.R;
 
 public class IntroActivity extends AppIntro {
-    private static final String BG_COLOR = "#010570";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,13 +23,13 @@ public class IntroActivity extends AppIntro {
         page1.setTitle("Il tuo assistente per gestire i parcheggi!");
         page1.setDescription("Dimentichi dove hai parcheggiato l'auto?\nNon ti ricordi quando scade il parchimetro?");
         page1.setImageDrawable(R.drawable.ic_intro_image_2);
-        page1.setBgColor(Color.parseColor(BG_COLOR));
+        page1.setBgColor(getColor(R.color.colorPrimaryDark));
 
         SliderPage page2 = new SliderPage();
         page2.setTitle("Ci penso io!");
         page2.setDescription("Parcheggia senza pensieri! Ci penserò io a condurti alla tua auto!");
         page2.setImageDrawable(R.drawable.ic_intro_image_1);
-        page2.setBgColor(Color.parseColor(BG_COLOR));
+        page2.setBgColor(getColor(R.color.colorPrimaryDark));
 
         addSlide(AppIntroFragment.newInstance(page1));
         addSlide(AppIntroFragment.newInstance(page2));

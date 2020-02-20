@@ -38,7 +38,8 @@
                     android:background="?attr/selectableItemBackgroundBorderless"
                     card_view:layout_constraintEnd_toEndOf="parent"
                     card_view:layout_constraintTop_toTopOf="parent"
-                    card_view:srcCompat="@drawable/ic_share" />
+                    card_view:srcCompat="@drawable/ic_share"
+                    android:padding="8sp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
