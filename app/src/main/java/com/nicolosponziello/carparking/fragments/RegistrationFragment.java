@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.nicolosponziello.carparking.MainActivity;
 import com.nicolosponziello.carparking.R;
+import com.nicolosponziello.carparking.activity.LoginRegistrationActivity;
 
 public class RegistrationFragment extends Fragment {
 
@@ -58,6 +59,7 @@ public class RegistrationFragment extends Fragment {
         passInput.addTextChangedListener(textWatcher);
 
         regBtn.setOnClickListener( v -> {
+            ((LoginRegistrationActivity)getActivity()).showLoadingAnimation();
             String email = mailInput.getText().toString();
             String pass = passInput.getText().toString();
             firebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(task ->{
@@ -70,6 +72,7 @@ public class RegistrationFragment extends Fragment {
                 }else{
                     Toast.makeText(getActivity(), "Errore durante la registarzione. Riprovare", Toast.LENGTH_SHORT).show();
                 }
+                ((LoginRegistrationActivity)getActivity()).stopLoadingAnimation();
             });
         });
 

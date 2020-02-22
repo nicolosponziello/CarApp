@@ -1,11 +1,15 @@
 package com.nicolosponziello.carparking.activity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import com.github.ybq.android.spinkit.style.WanderingCubes;
 import com.nicolosponziello.carparking.R;
 import com.nicolosponziello.carparking.fragments.LoginFragment;
 import com.nicolosponziello.carparking.fragments.RecoverPasswordFragment;
@@ -16,6 +20,8 @@ public class LoginRegistrationActivity extends AppCompatActivity {
 
     private Button changeLoginReg, recoverBtn;
     private FrameLayout fragmentHost;
+    private ProgressBar loadingAnimation;
+    private LinearLayout animationOverlay;
 
     private boolean registration;
 
@@ -27,6 +33,14 @@ public class LoginRegistrationActivity extends AppCompatActivity {
         changeLoginReg = findViewById(R.id.changeLogReg);
         fragmentHost = findViewById(R.id.fragmentHost);
         recoverBtn = findViewById(R.id.recoverBtn);
+        loadingAnimation = findViewById(R.id.spinAnimation);
+        animationOverlay = findViewById(R.id.animationOverlay);
+
+        //setup animazione caricamento
+        WanderingCubes cubes = new WanderingCubes();
+        loadingAnimation.setIndeterminateDrawable(cubes);
+        animationOverlay.setVisibility(View.GONE);
+
 
         registration = true;
         FragmentManager manager = getSupportFragmentManager();
@@ -73,6 +87,13 @@ public class LoginRegistrationActivity extends AppCompatActivity {
         LOGIN,
         REGISTER,
         RECOVER
+    }
+
+    public void showLoadingAnimation(){
+        this.animationOverlay.setVisibility(View.VISIBLE);
+    }
+    public void stopLoadingAnimation(){
+        this.animationOverlay.setVisibility(View.GONE);
     }
 
 

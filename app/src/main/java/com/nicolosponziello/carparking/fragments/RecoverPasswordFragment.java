@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.nicolosponziello.carparking.R;
+import com.nicolosponziello.carparking.activity.LoginRegistrationActivity;
 
 public class RecoverPasswordFragment extends Fragment {
 
@@ -51,12 +52,14 @@ public class RecoverPasswordFragment extends Fragment {
         emailInput.addTextChangedListener(watcher);
 
         recoverBtn.setOnClickListener(v -> {
+            ((LoginRegistrationActivity)getActivity()).showLoadingAnimation();
             FirebaseAuth.getInstance().sendPasswordResetEmail(emailInput.getText().toString()).addOnCompleteListener(task ->{
                 if(task.isSuccessful()){
                     Toast.makeText(getActivity(), "Link inviato per email!", Toast.LENGTH_LONG).show();
                 }else{
                     Toast.makeText(getActivity(), "Errore, riprovare", Toast.LENGTH_LONG).show();
                 }
+                ((LoginRegistrationActivity)getActivity()).stopLoadingAnimation();
             });
         });
         return view;
