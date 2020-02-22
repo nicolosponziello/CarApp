@@ -91,6 +91,8 @@ public class NewParkFragment extends Fragment {
         costInput = view.findViewById(R.id.costValue);
         noteInput = view.findViewById(R.id.noteValue);
 
+
+
         //di default nascondi il parchimetro
         parkimeterLayout.setVisibility(View.GONE);
         parkimeterSwitch.setOnCheckedChangeListener((v, checked)->{
@@ -106,6 +108,9 @@ public class NewParkFragment extends Fragment {
         lat = getArguments().getString(NewParkActivity.BUNDLE_LAT);
         lon = getArguments().getString(NewParkActivity.BUNDLE_LONG);
         coordinateValue.setText("( " + lat + " ; " + lon + " )");
+
+        //riempi di default il campo indirizzo
+        addressInput.setText(getAddressFromCoord(Double.valueOf(lat), Double.valueOf(lon)));
 
         //crea un nuovo pezzo di dati ParkingData
         newParking = new ParkingData();
