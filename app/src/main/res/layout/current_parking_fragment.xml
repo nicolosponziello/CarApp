@@ -16,7 +16,6 @@
         android:paddingRight="20dp"
         android:layout_margin="10dp"
         card_view:cardCornerRadius="4dp"
-
         android:background="?attr/selectableItemBackgroundBorderless"
         android:elevation="10dp">
 
@@ -26,21 +25,6 @@
             android:layout_marginBottom="20sp"
             android:orientation="vertical"
             android:padding="30sp">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageButton
-                    android:id="@+id/shareBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    card_view:layout_constraintEnd_toEndOf="parent"
-                    card_view:layout_constraintTop_toTopOf="parent"
-                    card_view:srcCompat="@drawable/ic_share"
-                    android:padding="8sp"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -130,29 +114,24 @@
                 android:layout_marginTop="20sp"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/doneBtn"
-                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                <ImageButton
+                    android:id="@+id/shareBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    card_view:srcCompat="@drawable/ic_share"
                     android:layout_weight="1"
-                    android:text="@string/done_btn"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="@android:color/holo_green_dark" />
+                    android:padding="8sp"/>
 
                 <ImageButton
                     android:id="@+id/goBtn"
                     style="@android:style/Widget.Material.ImageButton"
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     card_view:srcCompat="@drawable/ic_nav_button" />
             </LinearLayout>
-
         </LinearLayout>
-
-
-
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

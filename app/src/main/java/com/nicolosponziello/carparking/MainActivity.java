@@ -25,6 +25,7 @@ import com.nicolosponziello.carparking.fragments.CurrentParkingFragment;
 import com.nicolosponziello.carparking.fragments.NoPosFragment;
 import com.nicolosponziello.carparking.intro.IntroActivity;
 import com.nicolosponziello.carparking.model.ParkManager;
+import com.nicolosponziello.carparking.notification.NotifManager;
 import com.nicolosponziello.carparking.notification.ParkingNotification;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private FrameLayout posFrame;
     private FrameLayout bottomBar;
     private Toolbar toolbar;
-    private FloatingActionButton fabNewButton;
+    private FloatingActionButton fabNewButton, fabDoneButton;
     private NavigationView navigationView;
     private ActionBarDrawerToggle toggle;
 
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         posFrame = findViewById(R.id.current_pos_fragment);
         toolbar = findViewById(R.id.toolbar);
         fabNewButton = findViewById(R.id.newPosition);
+        fabDoneButton = findViewById(R.id.doneBtn);
         drawerLayout = findViewById(R.id.drawer_layout);
 
         setSupportActionBar(toolbar);
@@ -97,6 +99,12 @@ public class MainActivity extends AppCompatActivity {
             }
         }));
 
+        fabDoneButton.setOnClickListener(v -> {
+            ParkManager.getInstance(this).setDoneParking();
+            setupView();
+            NotifManager.getInstance().stopAlarm();
+        });
+
         //setup view
         setupView();
 
@@ -142,8 +150,10 @@ public class MainActivity extends AppCompatActivity {
         //hide fab button if a parking is active
         if(ParkManager.getInstance(this).hasActiveParking()){
             fabNewButton.hide();
+            fabDoneButton.show();
         }else{
             fabNewButton.show();
+            fabDoneButton.hide();
         }
     }
 

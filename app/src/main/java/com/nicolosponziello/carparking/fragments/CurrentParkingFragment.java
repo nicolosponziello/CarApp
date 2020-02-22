@@ -35,7 +35,6 @@ public class CurrentParkingFragment extends Fragment {
     private TextView cityLabel, addressLabel, dateLabel;
     private ImageView photoCard;
     private ImageButton goBtn, shareBtn;
-    private Button doneBtn;
 
     @Nullable
     @Override
@@ -49,7 +48,6 @@ public class CurrentParkingFragment extends Fragment {
         addressLabel = view.findViewById(R.id.addressCard);
         dateLabel = view.findViewById(R.id.dateCard);
         photoCard = view.findViewById(R.id.currentPhotoCard);
-        doneBtn = view.findViewById(R.id.doneBtn);
         goBtn = view.findViewById(R.id.goBtn);
         shareBtn = view.findViewById(R.id.shareBtn);
 
@@ -86,13 +84,6 @@ public class CurrentParkingFragment extends Fragment {
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, activityUri);
             mapIntent.setPackage("com.google.android.apps.maps");
             startActivity(mapIntent);
-        });
-
-        doneBtn.setOnClickListener(v -> {
-            //imposta il parcheggio come completato e aggiorna la view
-            ParkManager.getInstance(getActivity()).setDoneParking();
-            ((MainActivity) getActivity()).setupView();
-            NotifManager.getInstance().stopAlarm();
         });
 
         shareBtn.setOnClickListener(v -> {
