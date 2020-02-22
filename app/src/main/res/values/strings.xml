@@ -86,5 +86,8 @@
     <string name="login_to_reg">Registrati</string>
     <string name="reg_to_login">Già registrato? Login</string>
     <string name="logout">Logout</string>
-
+    <string name="recover_pass_btn">Recupera password</string>
+    <string name="login_frag_title">Login</string>
+    <string name="reg_frag_title">Registrazione</string>
+    <string name="recover_frag_title">Recupero password</string>
 </resources>

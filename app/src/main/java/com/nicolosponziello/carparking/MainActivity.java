@@ -12,8 +12,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -30,6 +28,7 @@ import com.nicolosponziello.carparking.intro.IntroActivity;
 import com.nicolosponziello.carparking.model.ParkManager;
 import com.nicolosponziello.carparking.notification.NotifManager;
 import com.nicolosponziello.carparking.notification.ParkingNotification;
+import com.nicolosponziello.carparking.util.Const;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -74,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         logoutBtn.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(this, LoginRegistrationActivity.class);
+            intent.putExtra(Const.LOGIN_REG_REC_MODE, LoginRegistrationActivity.Mode.LOGIN);
             startActivity(intent);
             finish();
         });
