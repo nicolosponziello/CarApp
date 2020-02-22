@@ -2,7 +2,6 @@ package com.nicolosponziello.carparking.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,7 +75,7 @@ public class ParkingDataAdapter extends RecyclerView.Adapter<ParkingDataAdapter.
             holder.addressTextView.setVisibility(View.GONE);
         }
 
-        holder.openDetailsButton.setOnClickListener(v -> {
+        holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailActivity.class);
             intent.putExtra(Const.DETAIL_EXTRA, parkingData.getId().toString());
             context.startActivity(intent);
@@ -93,7 +92,6 @@ public class ParkingDataAdapter extends RecyclerView.Adapter<ParkingDataAdapter.
      */
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView cityTextView, dateTextView, addressTextView;
-        private ImageButton openDetailsButton;
 
         public ViewHolder(View view){
             super(view);
@@ -101,7 +99,6 @@ public class ParkingDataAdapter extends RecyclerView.Adapter<ParkingDataAdapter.
             cityTextView = view.findViewById(R.id.cityItem);
             dateTextView = view.findViewById(R.id.dateItem);
             addressTextView = view.findViewById(R.id.addressItem);
-            openDetailsButton = view.findViewById(R.id.openDetailsButton);
 
         }
     }
