@@ -70,11 +70,12 @@
             android:layout_height="wrap_content">
 
             <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/logoutDrawerBtn"
-                android:text="@string/logout"
-                android:layout_alignParentBottom="true"/>
+                android:layout_width="match_parent"
+                android:background="@null"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:text="@string/logout" />
         </RelativeLayout>
 
     </com.google.android.material.navigation.NavigationView>
