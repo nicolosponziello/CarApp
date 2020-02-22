@@ -3,6 +3,7 @@ package com.nicolosponziello.carparking.fragments;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -162,56 +163,26 @@ public class NewParkFragment extends Fragment {
         //cancel btn
         cancelBtn.setOnClickListener(v -> {
             //annulla tutto
-            getActivity().finish();
+
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+            dialogBuilder.setMessage(R.string.cancel_dialog_message);
+            dialogBuilder.setTitle(R.string.app_name);
+
+            dialogBuilder.setPositiveButton(R.string.ok_dialog, (dialog,  id) -> getActivity().finish());
+            dialogBuilder.setNegativeButton(R.string.no_dialog, (dialog, id) ->  dialog.cancel());
+            AlertDialog dialog = dialogBuilder.create();
+            dialog.show();
         });
 
         //salva
         saveBtn.setOnClickListener(v -> {
-            //controlla quali dati sono stati messi dall'utente
-            if(noteInput.getText().length() > 0){
-                note = noteInput.getText().toString();
-                newParking.setNote(note);
-            }
-            if(addressInput.getText().length() > 0) {
-                address = addressInput.getText().toString();
-                newParking.setAddress(address);
-            }else{
-                //ottieni indirizzo automaticamente
-                address = getAddressFromCoord(Double.valueOf(lat), Double.valueOf(lon));
-                newParking.setAddress(address);
-            }
-            if(levelInput.getText().length() > 0) {
-                level = levelInput.getText().toString();
-                newParking.setParkLevel(level);
-            }
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+            dialogBuilder.setMessage(R.string.creating_dialog_message);
+            dialogBuilder.setTitle(R.string.app_name);
 
-            if(spotInput.getText().length() > 0){
-                spot = spotInput.getText().toString();
-                newParking.setParkSpot(spot);
-            }
-
-            if(costInput.getText().length() > 0){
-                cost = Float.valueOf(costInput.getText().toString());
-                newParking.setCost(cost);
-            }
-
-            if(expTime != 0){
-                newParking.setExpiration(expTime);
-                setupAlarm();
-            }
-
-            newParking.setLongitude(lon);
-            newParking.setLatitude(lat);
-            newParking.setDate(new Date());
-            newParking.setActive(true);
-            newParking.setPhotoPath(photoFilePath);
-            //ottieni la città automaticamente
-            newParking.setCity(getCityFromCoord(Float.valueOf(lat), Float.valueOf(lon)));
-
-            ParkManager.getInstance(getActivity()).addParkingData(newParking);
-            ParkManager.getInstance(getActivity()).setCurrentParking(newParking);
-
-            getActivity().finish();
+            dialogBuilder.setPositiveButton(R.string.ok_dialog, (dialog,  id) -> saveData());
+            AlertDialog dialog = dialogBuilder.create();
+            dialog.show();
         });
         return view;
     }
@@ -366,5 +337,53 @@ public class NewParkFragment extends Fragment {
             //alarmManager.setExact(NotifManager.RTC_WAKEUP, target, pendingIntent);
             NotifManager.getInstance().setupAlarm(alarmManager, target, getActivity());
         }
+    }
+
+    private void saveData(){
+        //controlla quali dati sono stati messi dall'utente
+        if(noteInput.getText().length() > 0){
+            note = noteInput.getText().toString();
+            newParking.setNote(note);
+        }
+        if(addressInput.getText().length() > 0) {
+            address = addressInput.getText().toString();
+            newParking.setAddress(address);
+        }else{
+            //ottieni indirizzo automaticamente
+            address = getAddressFromCoord(Double.valueOf(lat), Double.valueOf(lon));
+            newParking.setAddress(address);
+        }
+        if(levelInput.getText().length() > 0) {
+            level = levelInput.getText().toString();
+            newParking.setParkLevel(level);
+        }
+
+        if(spotInput.getText().length() > 0){
+            spot = spotInput.getText().toString();
+            newParking.setParkSpot(spot);
+        }
+
+        if(costInput.getText().length() > 0){
+            cost = Float.valueOf(costInput.getText().toString());
+            newParking.setCost(cost);
+        }
+
+        if(expTime != 0){
+            newParking.setExpiration(expTime);
+            setupAlarm();
+        }
+
+        newParking.setLongitude(lon);
+        newParking.setLatitude(lat);
+        newParking.setDate(new Date());
+        newParking.setActive(true);
+        newParking.setPhotoPath(photoFilePath);
+        //ottieni la città automaticamente
+        newParking.setCity(getCityFromCoord(Float.valueOf(lat), Float.valueOf(lon)));
+
+        ParkManager.getInstance(getActivity()).addParkingData(newParking);
+        ParkManager.getInstance(getActivity()).setCurrentParking(newParking);
+
+        getActivity().finish();
     }
 }

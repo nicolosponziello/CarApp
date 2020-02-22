@@ -35,6 +35,10 @@
     <string name="history_activity_title">Storico</string>
     <string name="no_data">Nessun dato</string>
 
+    <string name="creating_dialog_message">Parcheggio salvato correttamente</string>
+    <string name="cancel_dialog_message">Sei sicuro?</string>
+    <string name="no_dialog">Annulla</string>
+
     <!-- Current parking card -->
     <string name="current_parking_title">Ultimo parcheggio</string>
 
