@@ -113,40 +113,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * callback del lifecycle per la creazione della toolbar
-     * @param menu
-     * @return true/false
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        return true;
-    }
-
-    /**
-     * chiamata quando si fa click sugli item del menù della toolbar
-     * @param item specifico item
-     * @return true o false
-     */
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(toggle.onOptionsItemSelected(item)){
-            return true;
-        }
-        switch(item.getItemId()){
-            case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
-                return true;
-            case R.id.action_about:
-                startActivity(new Intent(this, AboutActivity.class));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    /**
      * chimata quando la richiesta dei permessi è completata
      * @param requestCode identifica la richiesta
      * @param permissions permessi
