@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fabNewButton, fabDoneButton;
     private NavigationView navigationView;
     private ActionBarDrawerToggle toggle;
-
+    private Button logoutBtn;
     private DrawerLayout drawerLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         fabNewButton = findViewById(R.id.newPosition);
         fabDoneButton = findViewById(R.id.doneBtn);
         drawerLayout = findViewById(R.id.drawer_layout);
+        logoutBtn = findViewById(R.id.logoutDrawerBtn);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -69,7 +71,12 @@ public class MainActivity extends AppCompatActivity {
 
         drawerLayout.addDrawerListener(toggle);
 
-
+        logoutBtn.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(this, LoginRegistrationActivity.class);
+            startActivity(intent);
+            finish();
+        });
 
         navigationView = findViewById(R.id.lateralMenu);
         //imposta le callback per il menu del drawer

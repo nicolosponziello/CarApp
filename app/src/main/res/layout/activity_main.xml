@@ -65,6 +65,18 @@
         app:menu="@menu/drawer_menu"
         app:headerLayout="@layout/drawer_header">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/logoutDrawerBtn"
+                android:text="@string/logout"
+                android:layout_alignParentBottom="true"/>
+        </RelativeLayout>
+
     </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>
