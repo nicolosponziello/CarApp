@@ -85,5 +85,6 @@
     <string name="registration_btn">Registrati</string>
     <string name="login_to_reg">Registrati</string>
     <string name="reg_to_login">Già registrato? Login</string>
+    <string name="logout">Logout</string>
 
 </resources>
