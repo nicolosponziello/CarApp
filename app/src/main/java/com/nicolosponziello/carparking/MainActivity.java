@@ -17,8 +17,10 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.nicolosponziello.carparking.activity.AboutActivity;
 import com.nicolosponziello.carparking.activity.HistoryActivity;
+import com.nicolosponziello.carparking.activity.LoginRegistrationActivity;
 import com.nicolosponziello.carparking.activity.NewParkActivity;
 import com.nicolosponziello.carparking.activity.SettingsActivity;
 import com.nicolosponziello.carparking.fragments.CurrentParkingFragment;
@@ -45,6 +47,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        if(firebaseAuth.getCurrentUser() == null){
+            Intent intent = new Intent(this, LoginRegistrationActivity.class);
+            startActivity(intent);
+            finish();
+        }
         posFrame = findViewById(R.id.current_pos_fragment);
         toolbar = findViewById(R.id.toolbar);
         fabNewButton = findViewById(R.id.newPosition);

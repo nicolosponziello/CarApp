@@ -78,4 +78,12 @@
     <string name="notif_channel_name">CarParkingChannel</string>
     <string name="notif_channel_desc">Channel per notifiche CarParking</string>
 
+    <!-- login -->
+    <string name="login_btn">Login</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="registration_btn">Registrati</string>
+    <string name="login_to_reg">Registrati</string>
+    <string name="reg_to_login">Già registrato? Login</string>
+
 </resources>

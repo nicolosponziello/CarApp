@@ -60,6 +60,9 @@
         <activity android:name=".activity.HistoryActivity">
 
         </activity>
+        <activity android:name=".activity.LoginRegistrationActivity">
+
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
