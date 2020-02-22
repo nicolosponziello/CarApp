@@ -118,11 +118,11 @@ public class NewParkFragment extends Fragment {
 
         //bottone per aprire la fotocamera
         addPhotoBtn.setOnClickListener(v -> {
-            if(!hasStoragePermission()){
+            /*if(!hasStoragePermission()){
                 requestStoragePermission();
             }else{
                 takePicture();
-            }
+            }*/
         });
 
         //mostra il dialog per la scadenza
@@ -145,10 +145,15 @@ public class NewParkFragment extends Fragment {
 
         photoView.setOnClickListener(v -> {
             //se è stato impostato un path per il file della foto salvato, al click della foto mostrala su una activity più grande
-            if(photoFilePath != null && photoFilePath != ""){
+            /*if(photoFilePath != null && photoFilePath != ""){
                 Intent intent = new Intent(getContext(), FullImageActivity.class);
                 intent.putExtra(PHOTO_EXTRA, photoFilePath);
                 startActivity(intent);
+            }*/
+            if(!hasStoragePermission()){
+                requestStoragePermission();
+            }else{
+                takePicture();
             }
         });
 
