@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "431359648920",
+    "firebase_url": "https://app-android-268515.firebaseio.com",
+    "project_id": "app-android-268515",
+    "storage_bucket": "app-android-268515.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:431359648920:android:e2db5b7dfe3812bd6d9ced",
+        "android_client_info": {
+          "package_name": "com.nicolosponziello.carparking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "431359648920-ri1k90r9e9rv3nod1nu4f6nkv8a1a87m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nicolosponziello.carparking",
+            "certificate_hash": "70675f50095b6db43834317e3ad8bea68148e21e"
+          }
+        },
+        {
+          "client_id": "431359648920-f5ei89io0qvovtq0oammvka6kvb12qjc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHYjFRYFofLq35J2zzqy59Wi9KW59k92o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "431359648920-f5ei89io0qvovtq0oammvka6kvb12qjc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
