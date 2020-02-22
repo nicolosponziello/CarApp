@@ -27,6 +27,7 @@
         <item
             android:id="@+id/aboutItem"
             android:checked="false"
+            android:icon="@drawable/ic_info_menu_item"
             android:title="@string/menu_about"/>
     </group>
 </menu>
