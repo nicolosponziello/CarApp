@@ -6,6 +6,8 @@
     android:background="@color/colorPrimaryDark"
     android:orientation="vertical">
 
+    <include layout="@layout/loading_overlay"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -60,5 +62,6 @@
             android:layout_marginLeft="10sp"
             android:text="@string/recover_pass_btn" />
     </LinearLayout>
+
 
 </LinearLayout>
