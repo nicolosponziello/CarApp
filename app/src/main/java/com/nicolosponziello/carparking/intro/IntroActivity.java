@@ -8,8 +8,10 @@ import androidx.fragment.app.Fragment;
 import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 import com.github.paolorotolo.appintro.model.SliderPage;
+import com.google.firebase.auth.FirebaseAuth;
 import com.nicolosponziello.carparking.MainActivity;
 import com.nicolosponziello.carparking.R;
+import com.nicolosponziello.carparking.activity.LoginRegistrationActivity;
 
 /**
  * intro dell'applicazione creata con la libreria AppIntro
@@ -57,6 +59,14 @@ public class IntroActivity extends AppIntro {
     private void setDone(){
         SharedPreferences preferences = getSharedPreferences(getString(R.string.shared_prefs), Context.MODE_PRIVATE);
         preferences.edit().putBoolean(getString(R.string.intro_shown), true).commit();
-        startActivity(new Intent(this, MainActivity.class));
+        //se dopo l'intro l'utente non è loggato portalo all'activity di login
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        if(firebaseAuth.getCurrentUser() == null){
+            Intent intent = new Intent(this, LoginRegistrationActivity.class);
+            startActivity(intent);
+            finish();
+        }else {
+            startActivity(new Intent(this, MainActivity.class));
+        }
     }
 }
