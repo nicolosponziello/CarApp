@@ -45,18 +45,20 @@
 
                 <TextView
                     android:id="@+id/coordinateLabel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
                     android:gravity="left"
-                    android:text="@string/coordinate_label" />
+                    android:text="@string/coordinate_label"
+                    android:layout_weight="0.3"/>
 
                 <TextView
                     android:id="@+id/coordinateValue"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.7"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
-                    android:gravity="right"/>
+                    android:gravity="right" />
             </TableRow>
 
             <TableRow
@@ -66,19 +68,21 @@
 
                 <TextView
                     android:id="@+id/addressLabel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
                     android:gravity="left"
                     android:layout_column="1"
                     android:text="@string/address_label" />
 
                 <EditText
                     android:id="@+id/addressValue"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:layout_column="2"
-                    android:singleLine="true" />
+                    android:layout_weight="0.7"
+                    android:singleLine="true"/>
 
             </TableRow>
 
@@ -89,20 +93,22 @@
 
                 <TextView
                     android:id="@+id/levelLabel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="left"
                     android:layout_column="1"
-                    android:text="@string/level_label" />
+                    android:text="@string/level_label"
+                    android:layout_weight="0.3"/>
 
                 <EditText
                     android:id="@+id/levelValue"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:layout_column="2"
                     android:ems="10"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:layout_weight="0.7"/>
             </TableRow>
 
             <TableRow
@@ -112,19 +118,21 @@
 
                 <TextView
                     android:id="@+id/placeLabel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
-                    android:text="@string/place_label" />
+                    android:text="@string/place_label"
+                    android:layout_weight="0.3"/>
 
                 <EditText
                     android:id="@+id/placeValue"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0sp"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:gravity="right"
                     android:ems="10"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:layout_weight="0.7"/>
             </TableRow>
 
 
@@ -134,17 +142,19 @@
                 android:layout_marginTop="16dp">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
                     android:layout_column="1"
                     android:text="@string/note_label" />
 
                 <EditText
                     android:id="@+id/noteValue"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:layout_column="2"
+                    android:layout_weight="0.7"
                     android:singleLine="true" />
             </TableRow>
 
