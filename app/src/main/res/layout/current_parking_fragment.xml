@@ -118,18 +118,20 @@
                     android:id="@+id/shareBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    card_view:srcCompat="@drawable/ic_share"
+                    android:layout_marginRight="10sp"
                     android:layout_weight="1"
-                    android:padding="8sp"/>
+                    android:background="@drawable/bordered_button"
+                    android:padding="8sp"
+                    card_view:srcCompat="@drawable/ic_share" />
 
                 <ImageButton
                     android:id="@+id/goBtn"
                     style="@android:style/Widget.Material.ImageButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10sp"
                     android:layout_weight="1"
-                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:background="@drawable/bordered_button"
                     card_view:srcCompat="@drawable/ic_nav_button" />
             </LinearLayout>
         </LinearLayout>
