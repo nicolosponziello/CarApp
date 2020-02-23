@@ -271,6 +271,8 @@ public class NewParkFragment extends Fragment {
                 File f = new File(photoFilePath);
                 Uri uri = Uri.fromFile(f);
                 photoView.setImageURI(uri);
+            }else if(resultCode == Activity.RESULT_CANCELED){
+                photoFilePath = null;
             }
         }
     }
