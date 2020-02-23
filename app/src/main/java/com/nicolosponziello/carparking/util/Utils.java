@@ -1,7 +1,10 @@
 package com.nicolosponziello.carparking.util;
 
 import android.net.Uri;
+
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -13,9 +16,13 @@ public class Utils {
      * @return stringa della data
      */
     public static String formatDate(Date date){
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-YYYY HH:mm", Locale.ITALIAN);
-        String dateFormatted = formatter.format(date);
-        return dateFormatted;
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm", Locale.ITALIAN);
+        int style = DateFormat.MEDIUM;
+        DateFormat df = DateFormat.getDateInstance(style, Locale.ITALIAN);
+        String dateFormatted = df.format(date);
+        String timeFormatted = formatter.format(date);
+
+        return dateFormatted + " " + timeFormatted;
     }
 
     /**
