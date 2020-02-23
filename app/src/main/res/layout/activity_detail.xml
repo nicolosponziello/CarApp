@@ -49,14 +49,16 @@
 
                 <TextView
                     android:id="@+id/cityText"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.3"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
                     android:text="@string/city_label" />
 
                 <TextView
                     android:id="@+id/cityValue"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.7"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:gravity="right" />
@@ -69,14 +71,16 @@
 
                 <TextView
                     android:id="@+id/dateText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.3"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
                     android:text="@string/date_label" />
 
                 <TextView
                     android:id="@+id/dateValue"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.7"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:gravity="right"/>
@@ -88,14 +92,16 @@
 
                 <TextView
                     android:id="@+id/coordText"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.3"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
                     android:text="@string/coordinate_label" />
 
                 <TextView
                     android:id="@+id/coordinateValue"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.7"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:gravity="right" />
@@ -108,14 +114,16 @@
 
                 <TextView
                     android:id="@+id/addressText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.3"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
                     android:text="@string/address_label" />
 
                 <TextView
                     android:id="@+id/addressValue"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.7"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:gravity="right"/>
@@ -127,14 +135,16 @@
 
                 <TextView
                     android:id="@+id/placeText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.3"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
                     android:text="@string/place_label" />
 
                 <TextView
                     android:id="@+id/placeValue"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.7"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:gravity="right"/>
@@ -147,14 +157,16 @@
 
                 <TextView
                     android:id="@+id/levelText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.3"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
                     android:text="@string/level_label" />
 
                 <TextView
                     android:id="@+id/levelValue"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.7"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:gravity="right"/>
@@ -166,14 +178,16 @@
 
                 <TextView
                     android:id="@+id/noteText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.3"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
                     android:text="@string/note_label" />
 
                 <TextView
                     android:id="@+id/noteValue"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.7"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:gravity="right"/>
@@ -185,14 +199,16 @@
 
                 <TextView
                     android:id="@+id/costText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.3"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
                     android:text="@string/cost_label" />
 
                 <TextView
                     android:id="@+id/costValue"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.7"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:gravity="right"/>
@@ -204,14 +220,16 @@
 
                 <TextView
                     android:id="@+id/expText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.3"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
                     android:text="@string/exp_label" />
 
                 <TextView
                     android:id="@+id/expValue"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.7"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:gravity="right"/>

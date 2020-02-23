@@ -57,20 +57,27 @@
                 android:layout_height="wrap_content"
                 android:stretchColumns="1">
 
-                <TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
 
                     <TextView
                         android:layout_column="1"
                         android:gravity="left"
                         android:text="@string/address_label"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"/>
                     <TextView
                         android:id="@+id/addressCard"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="2"
                         android:gravity="right"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:layout_weight="0.75"/>
                 </TableRow>
 
                 <TableRow>
