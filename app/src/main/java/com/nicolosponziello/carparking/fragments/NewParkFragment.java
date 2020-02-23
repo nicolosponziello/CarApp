@@ -330,12 +330,16 @@ public class NewParkFragment extends Fragment {
             //PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), REQUEST_ALARM, intent, 0);
 
             int before = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(getContext()).getString(getString(R.string.notif_key), "0"));
-            int millis = before * 60 * 1000; //minutes -> millis
+            Log.d("notif", "before: " + before);
+            long millis = before * 60 * 1000; //minutes -> millis
             long target = newParking.getExpiration() - millis;
-            if(target < new Date().getTime()){
+            Log.d("notif", "target: " + target);
+            long currentDateMillis = new Date().getTime();
+            Log.d("notif", "current millis: " + currentDateMillis);
+            if(target < currentDateMillis){
                 target = newParking.getExpiration();
             }
-            Log.d("Alarm", "Setting alarm to " + target);
+            Log.d("notif", "Setting alarm to " + target);
             //alarmManager.setExact(NotifManager.RTC_WAKEUP, target, pendingIntent);
             NotifManager.getInstance().setupAlarm(alarmManager, target, getActivity());
         }

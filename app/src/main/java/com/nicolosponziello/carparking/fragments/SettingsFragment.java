@@ -13,6 +13,7 @@ import androidx.preference.SwitchPreference;
 import com.nicolosponziello.carparking.MainActivity;
 import com.nicolosponziello.carparking.R;
 import com.nicolosponziello.carparking.database.DatabaseHelper;
+import com.nicolosponziello.carparking.dialogs.ChangePasswordDialog;
 
 /**
  * fragment per la gestione delle impostazioni
@@ -23,6 +24,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private Preference deleteDb;
     private SwitchPreference enableNotif;
     private EditTextPreference notifBeforeTime;
+    private Preference changePassword;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -31,6 +33,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         notifBeforeTime = findPreference(getString(R.string.notif_key));
         deleteDb = findPreference(getString(R.string.delete_db_key));
         enableNotif = findPreference(getString(R.string.enable_notif_key));
+        changePassword = findPreference(getString(R.string.change_pass_key));
 
         showIntro.setOnPreferenceClickListener((preference) ->{
             SharedPreferences preferences = getActivity().getSharedPreferences(getString(R.string.shared_prefs), Context.MODE_PRIVATE);
@@ -60,6 +63,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this::OnSharedPreferenceChangeListener);
 
+        changePassword.setOnPreferenceClickListener(preference -> {
+            new ChangePasswordDialog(this.getActivity()).show();
+            return true;
+        });
     }
 
     //listen for changes

@@ -21,6 +21,15 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:title="@string/account_pref_group">
+
+        <Preference
+            android:key="@string/change_pass_key"
+            android:title="Cambia password"/>
+    </PreferenceCategory>
+
+
+    <PreferenceCategory
         android:title="@string/misc_pref_title">
 
         <Preference
@@ -33,8 +42,6 @@
             android:title="@string/delete_db_title"/>
 
     </PreferenceCategory>
-
-
 
 
 </PreferenceScreen>
