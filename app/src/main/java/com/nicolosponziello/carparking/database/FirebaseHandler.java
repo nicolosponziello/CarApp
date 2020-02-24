@@ -104,11 +104,12 @@ public class FirebaseHandler {
         });
     }
     public void deleteData(String uuid){
+        ParkManager.getInstance(context).completeDeleteData(uuid);
         CollectionReference userCollection = firestore.collection(firebaseAuth.getCurrentUser().getUid());
         userCollection.document(uuid).delete().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 Log.d("firestore", "delete success");
-                ParkManager.getInstance(context).completeDeleteData(uuid);
+
             }
         });
     }
