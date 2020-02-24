@@ -142,7 +142,7 @@ public class ParkManager {
     }
 
     public List<ParkingData> getParkingData(){
-        return this.parkingData;
+        return parkingData;
     }
 
     public void completeAddData(ParkingData data) {
