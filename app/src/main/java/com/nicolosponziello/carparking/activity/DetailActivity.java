@@ -2,12 +2,14 @@ package com.nicolosponziello.carparking.activity;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,7 +29,9 @@ import com.nicolosponziello.carparking.model.ParkingData;
 import com.nicolosponziello.carparking.util.Const;
 import com.nicolosponziello.carparking.util.Utils;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import static com.nicolosponziello.carparking.fragments.NewParkFragment.PHOTO_EXTRA;
@@ -41,10 +45,12 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
 
     private TextView cityLabel, dateLabel, coordLabel, addrLabel,
         spotLabel, levelLabel, noteLabel, costLabel, expLabel, photoLabel;
-    private ImageView photoView;
+
+    private List<ImageView> photoViewList;
 
     private ImageButton closeBtn;
     private ImageButton deleteBtn;
+    private LinearLayout imagesLayout;
 
     private ParkingData parkingData;
     @Override
@@ -63,10 +69,11 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         expLabel = findViewById(R.id.expValue);
         noteLabel = findViewById(R.id.noteValue);
         costLabel = findViewById(R.id.costValue);
-        photoView = findViewById(R.id.photoView);
         closeBtn = findViewById(R.id.closeBtn);
         deleteBtn = findViewById(R.id.deleteBtn);
         photoLabel = findViewById(R.id.photoDetailLabel);
+        photoViewList = new ArrayList<>();
+        imagesLayout = findViewById(R.id.imagesDetail);
 
         if(!hasLocationPermissions()){
             requesLocationPermissions();
@@ -149,25 +156,28 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
             findViewById(R.id.costText).setVisibility(View.GONE);
         }
 
-        if(parkingData.getPhotoPath() == null){
+        if(parkingData.getPhotoPath() == null || parkingData.getPhotoPath().size() == 0){
             Log.d("Photo", "error");
-            photoView.setVisibility(View.GONE);
             photoLabel.setVisibility(View.GONE);
 
         }else{
-            Log.d("Photo", parkingData.getPhotoPath());
-            File f = new File(parkingData.getPhotoPath());
-            Uri uri = Uri.fromFile(f);
-            photoView.setImageURI(uri);
-
-            photoView.setOnClickListener(v -> {
-                String photoFilePath = parkingData.getPhotoPath();
-                if(photoFilePath != null && photoFilePath != ""){
-                    Intent intent = new Intent(this, FullImageActivity.class);
-                    intent.putExtra(PHOTO_EXTRA, photoFilePath);
-                    startActivity(intent);
-                }
-            });
+            Log.d("Photo", parkingData.getPhotoPath().toString());
+            for(String path : parkingData.getPhotoPath()){
+                File f = new File(path);
+                Uri uri = Uri.fromFile(f);
+                ImageView tmp = (ImageView) getLayoutInflater().inflate(R.layout.image_view, imagesLayout, false);
+                tmp.setBackgroundDrawable(null);
+                photoViewList.add(tmp);
+                imagesLayout.addView(tmp);
+                tmp.setImageURI(uri);
+                tmp.setOnClickListener(v -> {
+                    if(path != null && path != ""){
+                        Intent intent = new Intent(this, FullImageActivity.class);
+                        intent.putExtra(PHOTO_EXTRA, path);
+                        startActivity(intent);
+                    }
+                });
+            }
         }
         deleteBtn.setOnClickListener(v -> {
             ParkManager.getInstance(this).deleteParkingData(parkingData.getId());

@@ -39,6 +39,7 @@ import com.nicolosponziello.carparking.model.ParkingData;
 import com.nicolosponziello.carparking.notification.NotifManager;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -54,8 +55,11 @@ public class NewParkFragment extends Fragment {
     public static final String PHOTO_EXTRA = "photo_extra";
     private static final int EXTERNAL_STORAGE_PERMISSION = 2;
 
+    private int currentImageIndex = 0;
+    private List<String> paths;
+
     private TextView coordinateValue;
-    private ImageView photoView;
+    private List<ImageView> photosViewList;
     private ImageButton addPhotoBtn;
     private String photoFilePath;
     private Button addTimeBtn;
@@ -65,6 +69,8 @@ public class NewParkFragment extends Fragment {
     private Button saveBtn;
     private Button cancelBtn;
     private EditText addressInput, levelInput, spotInput, costInput, noteInput;
+
+    private LinearLayout imagesLayout;
 
 
     private long expTime;
@@ -79,7 +85,11 @@ public class NewParkFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.new_park_fragment, container, false);
 
-        photoView = view.findViewById(R.id.park_photo);
+        photosViewList = new ArrayList<>();
+        paths = new ArrayList<>();
+        imagesLayout = view.findViewById(R.id.imagesLayout);
+        ImageView photoView = view.findViewById(R.id.park_photo);
+        photosViewList.add(photoView);
         addPhotoBtn = view.findViewById(R.id.addPhotoBtn);
         addTimeBtn = view.findViewById(R.id.expButton);
         parkimeterLayout = view.findViewById(R.id.parkimeterData);
@@ -119,11 +129,11 @@ public class NewParkFragment extends Fragment {
 
         //bottone per aprire la fotocamera
         addPhotoBtn.setOnClickListener(v -> {
-            /*if(!hasStoragePermission()){
-                requestStoragePermission();
-            }else{
-                takePicture();
-            }*/
+            Log.d("add image", "adding new image");
+            ImageView tmp = (ImageView) inflater.inflate(R.layout.image_view, imagesLayout, false);
+            tmp.setOnClickListener(imageClickListener);
+            photosViewList.add(tmp);
+            imagesLayout.addView(tmp);
         });
 
         //mostra il dialog per la scadenza
@@ -144,19 +154,7 @@ public class NewParkFragment extends Fragment {
             dialog.show();
         });
 
-        photoView.setOnClickListener(v -> {
-            //se è stato impostato un path per il file della foto salvato, al click della foto mostrala su una activity più grande
-            /*if(photoFilePath != null && photoFilePath != ""){
-                Intent intent = new Intent(getContext(), FullImageActivity.class);
-                intent.putExtra(PHOTO_EXTRA, photoFilePath);
-                startActivity(intent);
-            }*/
-            if(!hasStoragePermission()){
-                requestStoragePermission();
-            }else{
-                takePicture();
-            }
-        });
+        photoView.setOnClickListener(imageClickListener);
 
 
 
@@ -214,7 +212,7 @@ public class NewParkFragment extends Fragment {
             File photoFile = null;
             try {
                 //crea nuovo file temporaneo
-                photoFile = createImageFile(newParking.getId());
+                photoFile = createImageFile(UUID.randomUUID().toString());
             }catch (IOException e){
                 Log.d("CarParking", "Error creating temp file");
             }
@@ -269,10 +267,15 @@ public class NewParkFragment extends Fragment {
         if(requestCode == REQUEST_PHOTO){
             if(resultCode == Activity.RESULT_OK){
                 File f = new File(photoFilePath);
+                paths.add(photoFilePath);
                 Uri uri = Uri.fromFile(f);
-                photoView.setImageURI(uri);
+                photosViewList.get(currentImageIndex).setImageURI(uri);
+                photosViewList.get(currentImageIndex).setBackgroundDrawable(null);
             }else if(resultCode == Activity.RESULT_CANCELED){
-                photoFilePath = null;
+                File f = new File(photoFilePath);
+                f.delete();
+                imagesLayout.removeView(photosViewList.get(currentImageIndex));
+                photosViewList.remove(currentImageIndex);
             }
         }
     }
@@ -383,7 +386,9 @@ public class NewParkFragment extends Fragment {
         newParking.setLatitude(lat);
         newParking.setDate(new Date().getTime());
         newParking.setActive(true);
-        newParking.setPhotoPath(photoFilePath);
+        for(String path : paths){
+            newParking.setPhotoPath(path);
+        }
         //ottieni la città automaticamente
         newParking.setCity(getCityFromCoord(Float.valueOf(lat), Float.valueOf(lon)));
 
@@ -392,4 +397,16 @@ public class NewParkFragment extends Fragment {
 
         getActivity().finish();
     }
+
+    private View.OnClickListener imageClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(!hasStoragePermission()){
+                requestStoragePermission();
+            }else{
+                currentImageIndex = photosViewList.indexOf(v);
+                takePicture();
+            }
+        }
+    };
 }

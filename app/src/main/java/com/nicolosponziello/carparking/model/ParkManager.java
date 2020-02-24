@@ -90,7 +90,7 @@ public class ParkManager {
      * crea il contentvalues del parking data
      * @param data
      * @return content values
-     */
+     *//*
     public static ContentValues getContentValues(ParkingData data) {
         ContentValues values = new ContentValues();
         values.put(DatabaseSchema.ParkTable.Cols.FIELD_ACTIVE, data.isActive());
@@ -108,7 +108,7 @@ public class ParkManager {
         values.put(DatabaseSchema.ParkTable.Cols.FIELD_UUID, data.getId());
 
         return values;
-    }
+    }*/
 
     /**
      * crea un cursor per l'elaborazione dei risultati di una query sul database

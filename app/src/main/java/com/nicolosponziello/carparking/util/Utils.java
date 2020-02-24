@@ -8,10 +8,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.nicolosponziello.carparking.model.ParkingData;
 
+import java.sql.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class Utils {
@@ -55,7 +57,7 @@ public class Utils {
         long exp = Long.parseLong(doc.getData().get("expiration").toString());
         String city = doc.getData().get("city").toString();
         long date = Long.parseLong(doc.getData().get("date").toString());
-        String photoPath = doc.getData().get("photo") != null? doc.getData().get("photo").toString():null;
+        List<String> photoPath = doc.getData().get("photoPath") != null? (List<String>)doc.getData().get("photoPath"):null;
 
         ParkingData newData = new ParkingData();
 
@@ -71,7 +73,9 @@ public class Utils {
         newData.setExpiration(exp);
         newData.setCity(city);
         newData.setDate(date);
-        newData.setPhotoPath(photoPath);
+        for(String path : photoPath){
+            newData.setPhotoPath(path);
+        }
 
         return newData;
     }

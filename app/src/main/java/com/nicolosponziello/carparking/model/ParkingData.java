@@ -1,7 +1,10 @@
 package com.nicolosponziello.carparking.model;
 
 import android.util.Log;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -19,11 +22,12 @@ public class ParkingData {
     private float cost;
     private long expiration;
     private String city;
-    private String photoPath;
+    private List<String> photoPath;
     private long date; //ms
     private String id;
 
     public ParkingData(){
+        photoPath = new ArrayList<>();
     }
 
     public String getAddress() {
@@ -58,7 +62,7 @@ public class ParkingData {
         return city;
     }
 
-    public String getPhotoPath() {
+    public List<String> getPhotoPath() {
         return photoPath;
     }
 
@@ -126,9 +130,12 @@ public class ParkingData {
         this.expiration = expiration;
     }
 
-    public void setPhotoPath(String photoPath) {
-        Log.d("CarParking", "setting photopath");
-        this.photoPath = photoPath;
+    public void setPhotoPath(String path) {
+        Log.d("CarParking", "setting photopath" + path);
+        if(photoPath == null){
+            photoPath = new ArrayList<>();
+        }
+        photoPath.add(path);
     }
 
     @Override

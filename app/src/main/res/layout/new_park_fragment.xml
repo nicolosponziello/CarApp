@@ -10,29 +10,6 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:id="@+id/park_photo"
-                android:layout_height="200sp"
-                android:scaleType="center"
-                android:cropToPadding="true"
-                android:background="@color/cardview_dark_background"/>
-
-            <ImageButton
-                android:id="@+id/addPhotoBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:padding="10sp"
-                android:src="@drawable/ic_add_photo_icon" />
-
-        </LinearLayout>
-
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -226,6 +203,35 @@
 
             </TableRow>
         </TableLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imagesLayout"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:id="@+id/park_photo"
+                    android:layout_height="200sp"
+                    android:background="@color/cardview_dark_background"/>
+            </LinearLayout>
+
+
+            <ImageButton
+                android:id="@+id/addPhotoBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="10sp"
+                android:src="@drawable/ic_add_photo_icon" />
+
+        </LinearLayout>
 
 
         <LinearLayout
