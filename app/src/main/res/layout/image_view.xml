@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ImageView
+    android:layout_height="200sp"
+    android:layout_width="match_parent"
+    android:layout_marginTop="10sp"
+    android:layout_marginBottom="10sp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/cardview_dark_background">
+
+</ImageView>

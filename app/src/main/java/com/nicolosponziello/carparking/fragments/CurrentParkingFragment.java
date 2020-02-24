@@ -64,10 +64,11 @@ public class CurrentParkingFragment extends Fragment {
         dateLabel.setText(Utils.formatDate(date));
 
         //se non è stata impostata una foto nascondi l'image view
-        if(parkingData.getPhotoPath() == null){
+        if(parkingData.getPhotoPath().size() == 0){
             photoCard.setVisibility(View.GONE);
         }else{
-            File f = new File(parkingData.getPhotoPath());
+            Log.d("CarParking photo", parkingData.getPhotoPath().size() + "");
+            File f = new File(parkingData.getPhotoPath().get(0));
             Uri uri = Uri.fromFile(f);
             photoCard.setImageURI(uri);
         }
@@ -76,7 +77,7 @@ public class CurrentParkingFragment extends Fragment {
         card.setOnClickListener(v -> {
             //apri i dettagli
             Intent intent = new Intent(getActivity(), DetailActivity.class);
-            intent.putExtra(Const.DETAIL_EXTRA, parkingData.getId().toString());
+            intent.putExtra(Const.DETAIL_EXTRA, parkingData.getId());
             startActivity(intent);
         });
 

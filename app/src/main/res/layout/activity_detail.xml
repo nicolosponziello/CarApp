@@ -266,14 +266,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="20sp"
-            android:gravity="center">
+            android:gravity="center"
+            android:id="@+id/imagesDetail"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/photoView"
-                android:layout_width="400sp"
-                android:layout_height="400sp"
-                android:layout_margin="0sp"
-                android:layout_gravity="center"/>
         </LinearLayout>
 
         <LinearLayout
