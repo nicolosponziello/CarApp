@@ -1,6 +1,12 @@
 package com.nicolosponziello.carparking.util;
 
 import android.net.Uri;
+import android.util.Log;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.nicolosponziello.carparking.model.ParkingData;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -34,5 +40,44 @@ public class Utils {
     public static Uri getMapsUrlFromLocation(double lat, double lon){
         Uri activityUri = Uri.parse("http://maps.google.com?daddr=" + lat + "," + lon);
         return activityUri;
+    }
+
+    public static ParkingData buildParkingData(DocumentSnapshot doc){
+        String uuid = doc.getData().get("id").toString();
+        String address = doc.getData().get("address").toString();
+        boolean active = Boolean.parseBoolean(doc.getData().get("active").toString());
+        String lon  = doc.getData().get("longitude").toString();
+        String lat = doc.getData().get("latitude").toString();
+        String spot = doc.getData().get("spot") != null? doc.getData().get("spot").toString():null;
+        String level = doc.getData().get("level") != null? doc.getData().get("level").toString():null;
+        String note = doc.getData().get("note") != null?  doc.getData().get("note").toString():null;
+        float cost = Float.valueOf(doc.getData().get("cost").toString());
+        long exp = Long.parseLong(doc.getData().get("expiration").toString());
+        String city = doc.getData().get("city").toString();
+        long date = Long.parseLong(doc.getData().get("date").toString());
+        String photoPath = doc.getData().get("photo") != null? doc.getData().get("photo").toString():null;
+
+        ParkingData newData = new ParkingData();
+
+        newData.setId(uuid);
+        newData.setAddress(address);
+        newData.setActive(active);
+        newData.setLongitude(lon);
+        newData.setLatitude(lat);
+        newData.setParkSpot(spot);
+        newData.setParkLevel(level);
+        newData.setNote(note);
+        newData.setCost(cost);
+        newData.setExpiration(exp);
+        newData.setCity(city);
+        newData.setDate(date);
+        newData.setPhotoPath(photoPath);
+
+        return newData;
+    }
+
+
+    public static boolean isUserLogged(){
+        return FirebaseAuth.getInstance().getCurrentUser() != null;
     }
 }

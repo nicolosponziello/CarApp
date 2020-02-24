@@ -20,8 +20,8 @@ public class ParkingData {
     private long expiration;
     private String city;
     private String photoPath;
-    private Date date; //ms
-    private UUID id;
+    private long date; //ms
+    private String id;
 
     public ParkingData(){
     }
@@ -62,11 +62,11 @@ public class ParkingData {
         return photoPath;
     }
 
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
@@ -110,11 +110,11 @@ public class ParkingData {
         this.city = city;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public void setDate(Date date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
@@ -129,5 +129,24 @@ public class ParkingData {
     public void setPhotoPath(String photoPath) {
         Log.d("CarParking", "setting photopath");
         this.photoPath = photoPath;
+    }
+
+    @Override
+    public String toString() {
+        return "ParkingData{" +
+                "address='" + address + '\'' +
+                ", active=" + active +
+                ", longitude='" + longitude + '\'' +
+                ", latitude='" + latitude + '\'' +
+                ", parkSpot='" + parkSpot + '\'' +
+                ", parkLevel='" + parkLevel + '\'' +
+                ", note='" + note + '\'' +
+                ", cost=" + cost +
+                ", expiration=" + expiration +
+                ", city='" + city + '\'' +
+                ", photoPath='" + photoPath + '\'' +
+                ", date=" + date +
+                ", id='" + id + '\'' +
+                '}';
     }
 }

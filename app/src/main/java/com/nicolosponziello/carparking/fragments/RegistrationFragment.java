@@ -14,9 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.nicolosponziello.carparking.MainActivity;
 import com.nicolosponziello.carparking.R;
 import com.nicolosponziello.carparking.activity.LoginRegistrationActivity;
+import com.nicolosponziello.carparking.database.FirebaseHandler;
 
 public class RegistrationFragment extends Fragment {
 
@@ -62,18 +64,7 @@ public class RegistrationFragment extends Fragment {
             ((LoginRegistrationActivity)getActivity()).showLoadingAnimation();
             String email = mailInput.getText().toString();
             String pass = passInput.getText().toString();
-            firebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(task ->{
-                if(task.isSuccessful()){
-                    //l'utente è stato registrato con successo
-                    Toast.makeText(getActivity(), "Restrazione completata con successo", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    startActivity(intent);
-                    getActivity().finish();
-                }else{
-                    Toast.makeText(getActivity(), "Errore durante la registarzione. Riprovare", Toast.LENGTH_SHORT).show();
-                }
-                ((LoginRegistrationActivity)getActivity()).stopLoadingAnimation();
-            });
+            FirebaseHandler.getInstance(getActivity()).register(email, pass, ((LoginRegistrationActivity) getActivity()));
         });
 
         return view;

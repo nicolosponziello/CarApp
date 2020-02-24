@@ -1,5 +1,8 @@
 package com.nicolosponziello.carparking.activity;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +17,7 @@ import com.nicolosponziello.carparking.R;
 import com.nicolosponziello.carparking.fragments.LoginFragment;
 import com.nicolosponziello.carparking.fragments.RecoverPasswordFragment;
 import com.nicolosponziello.carparking.fragments.RegistrationFragment;
+import com.nicolosponziello.carparking.intro.IntroActivity;
 import com.nicolosponziello.carparking.util.Const;
 
 public class LoginRegistrationActivity extends AppCompatActivity {
@@ -36,6 +40,13 @@ public class LoginRegistrationActivity extends AppCompatActivity {
         loadingAnimation = findViewById(R.id.spinAnimation);
         animationOverlay = findViewById(R.id.animationOverlay);
 
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.shared_prefs), Context.MODE_PRIVATE);
+        boolean introShown = sharedPreferences.getBoolean(getString(R.string.intro_shown), false);
+        //se l'intro non è mai stata mostrata (es. primo avvio) mostra l'activity
+        if(!introShown){
+            startActivity(new Intent(this, IntroActivity.class));
+        }
+
         //setup animazione caricamento
         WanderingCubes cubes = new WanderingCubes();
         loadingAnimation.setIndeterminateDrawable(cubes);
@@ -49,12 +60,14 @@ public class LoginRegistrationActivity extends AppCompatActivity {
             switch (mode) {
                 case LOGIN:
                     manager.beginTransaction().add(R.id.fragmentHost, new LoginFragment()).commit();
+                    changeLoginReg.setText(R.string.login_to_reg);
                     break;
                 case RECOVER:
                     manager.beginTransaction().add(R.id.fragmentHost, new RecoverPasswordFragment()).commit();
                     break;
                 case REGISTER:
                     manager.beginTransaction().add(R.id.fragmentHost, new RegistrationFragment()).commit();
+                    changeLoginReg.setText(R.string.reg_to_login);
                     break;
                 default:
                     manager.beginTransaction().add(R.id.fragmentHost, new RegistrationFragment()).commit();
