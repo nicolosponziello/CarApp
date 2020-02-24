@@ -15,6 +15,8 @@ import com.nicolosponziello.carparking.model.ParkManager;
 import com.nicolosponziello.carparking.model.ParkingData;
 import com.nicolosponziello.carparking.util.Const;
 import com.nicolosponziello.carparking.util.Utils;
+
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -63,8 +65,10 @@ public class ParkingDataAdapter extends RecyclerView.Adapter<ParkingDataAdapter.
             holder.cityTextView.setVisibility(View.GONE);
         }
 
-        if(parkingData.getDate() != null){
-            holder.dateTextView.setText("Data: " + Utils.formatDate(parkingData.getDate()));
+        if(parkingData.getDate() != 0){
+            Date date = new Date();
+            date.setTime(parkingData.getDate());
+            holder.dateTextView.setText("Data: " + Utils.formatDate(date));
         }else{
             holder.dateTextView.setVisibility(View.GONE);
         }

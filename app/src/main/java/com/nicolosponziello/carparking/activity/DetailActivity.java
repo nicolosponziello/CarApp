@@ -1,6 +1,7 @@
 package com.nicolosponziello.carparking.activity;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,8 +9,12 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -31,6 +36,8 @@ import static com.nicolosponziello.carparking.fragments.NewParkFragment.PHOTO_EX
  * activity che gestisce la visualizzazione dei dettagli del parking
  */
 public class DetailActivity extends AppCompatActivity implements OnMapReadyCallback {
+
+    private static final int FINE_LOCATION_PERMISSION = 1;
 
     private TextView cityLabel, dateLabel, coordLabel, addrLabel,
         spotLabel, levelLabel, noteLabel, costLabel, expLabel, photoLabel;
@@ -61,12 +68,22 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         deleteBtn = findViewById(R.id.deleteBtn);
         photoLabel = findViewById(R.id.photoDetailLabel);
 
+        if(!hasLocationPermissions()){
+            requesLocationPermissions();
+        }else{
+            setupView();
+        }
+
+
+    }
+
+    private void setupView(){
         closeBtn.setOnClickListener(v -> finish());
 
         Bundle extras = getIntent().getExtras();
         String id = extras.getString(Const.DETAIL_EXTRA);
 
-        parkingData = ParkManager.getInstance(this).getParkingData(UUID.fromString(id));
+        parkingData = ParkManager.getInstance(this).getParkingData(id);
 
         if(parkingData.getCity() != null){
             cityLabel.setText(parkingData.getCity());
@@ -75,8 +92,10 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
             findViewById(R.id.cityText).setVisibility(View.GONE);
         }
 
-        if(parkingData.getDate() != null){
-            dateLabel.setText(Utils.formatDate(parkingData.getDate()));
+        if(parkingData.getDate() != 0){
+            Date date = new Date();
+            date.setTime(parkingData.getDate());
+            dateLabel.setText(Utils.formatDate(date));
         }else{
             dateLabel.setVisibility(View.GONE);
             findViewById(R.id.dateText).setVisibility(View.GONE);
@@ -168,5 +187,35 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         googleMap.addMarker(new MarkerOptions().position(new LatLng(lat, lon)));
         googleMap.setMyLocationEnabled(true);
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 60));
+    }
+
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == FINE_LOCATION_PERMISSION){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //we have the best permission for localization
+                setupView();
+            }else {
+                finish();
+            }
+        }
+    }
+
+    /**
+     * controlla che l'utente abbia dato i permessi di localizzazione all'applicazione
+     * @return true se concessi, false altrimenti
+     */
+    private boolean hasLocationPermissions(){
+        if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * richiede il permesso per la localizzazione FINE (più precisa di COARSE)
+     */
+    private void requesLocationPermissions(){
+        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, FINE_LOCATION_PERMISSION);
     }
 }

@@ -29,12 +29,12 @@ public class CustomCursorWrapper extends CursorWrapper {
         float cost = getFloat(getColumnIndex(ParkTable.Cols.FIELD_COST));
         long exp = getLong(getColumnIndex(ParkTable.Cols.FIELD_EXP));
         String city = getString(getColumnIndex(ParkTable.Cols.FIELD_CITY));
-        Date date = new Date(getString(getColumnIndex(ParkTable.Cols.FIELD_DATE)));
+        long date = Long.parseLong(getString(getColumnIndex(ParkTable.Cols.FIELD_DATE)));
         String photoPath = getString(getColumnIndex(ParkTable.Cols.FIELD_PHOTO));
 
         ParkingData newData = new ParkingData();
 
-        newData.setId(UUID.fromString(uuid));
+        newData.setId(uuid);
         newData.setAddress(address);
         newData.setActive(active != 0);
         newData.setLongitude(lon);

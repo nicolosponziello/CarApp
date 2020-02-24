@@ -24,6 +24,7 @@ import com.nicolosponziello.carparking.notification.NotifManager;
 import com.nicolosponziello.carparking.util.Const;
 import com.nicolosponziello.carparking.util.Utils;
 import java.io.File;
+import java.util.Date;
 
 /**
  * fragment che contiene lo stato del parcheggio corrente
@@ -58,7 +59,9 @@ public class CurrentParkingFragment extends Fragment {
 
         addressLabel.setText(parkingData.getAddress());
 
-        dateLabel.setText(Utils.formatDate(parkingData.getDate()));
+        Date date = new Date();
+        date.setTime(parkingData.getDate());
+        dateLabel.setText(Utils.formatDate(date));
 
         //se non è stata impostata una foto nascondi l'image view
         if(parkingData.getPhotoPath() == null){

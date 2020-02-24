@@ -115,7 +115,7 @@ public class NewParkFragment extends Fragment {
 
         //crea un nuovo pezzo di dati ParkingData
         newParking = new ParkingData();
-        newParking.setId(UUID.randomUUID());
+        newParking.setId(UUID.randomUUID().toString());
 
         //bottone per aprire la fotocamera
         addPhotoBtn.setOnClickListener(v -> {
@@ -193,8 +193,8 @@ public class NewParkFragment extends Fragment {
      * @return file temporaneo
      * @throws IOException
      */
-    private File createImageFile(UUID id) throws IOException {
-        String imageName = id.toString();
+    private File createImageFile(String id) throws IOException {
+        String imageName = id;
         File dir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageName,
@@ -381,7 +381,7 @@ public class NewParkFragment extends Fragment {
 
         newParking.setLongitude(lon);
         newParking.setLatitude(lat);
-        newParking.setDate(new Date());
+        newParking.setDate(new Date().getTime());
         newParking.setActive(true);
         newParking.setPhotoPath(photoFilePath);
         //ottieni la città automaticamente
