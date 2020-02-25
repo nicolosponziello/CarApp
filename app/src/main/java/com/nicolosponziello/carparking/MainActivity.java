@@ -7,6 +7,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
+
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -43,6 +45,7 @@ import com.nicolosponziello.carparking.util.Const;
 public class MainActivity extends AppCompatActivity {
 
     private static final int FINE_LOCATION_PERMISSION = 1;
+    private static final int ALL_PERMISSIONS = 7;
 
     private FrameLayout posFrame;
     private FrameLayout bottomBar;
@@ -103,7 +106,14 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(new Intent(this, SettingsActivity.class));
                     break;
                 case R.id.historyItem:
-                    startActivity(new Intent(this, HistoryActivity.class));
+                    //controlla permessi
+                    if(!hasAllPermissions()){
+                        Log.d("CarParking", "Permission missing");
+                        requestAllPermissions();
+                    }else{
+                        startActivity(new Intent(this, HistoryActivity.class));
+                    }
+
                     break;
                 case R.id.aboutItem:
                     startActivity(new Intent(this, AboutActivity.class));
@@ -162,6 +172,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(this, NewParkActivity.class));
             }
         }
+        if(requestCode == ALL_PERMISSIONS){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
+                startActivity(new Intent(this, HistoryActivity.class));
+            }
+        }
     }
 
     /**
@@ -201,5 +216,14 @@ public class MainActivity extends AppCompatActivity {
      */
     private void requesLocationPermissions(){
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, FINE_LOCATION_PERMISSION);
+    }
+
+    private boolean hasAllPermissions(){
+        return ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestAllPermissions(){
+        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.ACCESS_FINE_LOCATION}, ALL_PERMISSIONS);
     }
 }

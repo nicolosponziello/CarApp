@@ -1,13 +1,17 @@
 package com.nicolosponziello.carparking.adapter;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.nicolosponziello.carparking.R;
 import com.nicolosponziello.carparking.activity.DetailActivity;
@@ -24,6 +28,7 @@ import java.util.List;
  */
 public class ParkingDataAdapter extends RecyclerView.Adapter<ParkingDataAdapter.ViewHolder> {
 
+    private static final int FINE_LOCATION_PERMISSION = 2;
     private List<ParkingData> data;
     private Context context;
 

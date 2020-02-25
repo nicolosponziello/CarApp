@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.nicolosponziello.carparking.MainActivity;
+import com.nicolosponziello.carparking.activity.LoginRegistrationActivity;
 
 public class DataLoadingCallback implements Callback {
     private Context context;
@@ -17,6 +18,9 @@ public class DataLoadingCallback implements Callback {
     public void onSuccess() {
         Intent intent = new Intent(context, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        if(context instanceof LoginRegistrationActivity){
+            ((LoginRegistrationActivity) context).stopLoadingAnimation();
+        }
         context.startActivity(intent);
     }
 
