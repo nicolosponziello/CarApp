@@ -6,14 +6,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
+
+import com.google.firebase.auth.FirebaseAuth;
 import com.nicolosponziello.carparking.MainActivity;
 import com.nicolosponziello.carparking.R;
+import com.nicolosponziello.carparking.activity.LoginRegistrationActivity;
 import com.nicolosponziello.carparking.database.DatabaseHelper;
 import com.nicolosponziello.carparking.dialogs.ChangePasswordDialog;
+import com.nicolosponziello.carparking.model.ParkManager;
+import com.nicolosponziello.carparking.util.Const;
 
 /**
  * fragment per la gestione delle impostazioni
@@ -25,6 +32,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private SwitchPreference enableNotif;
     private EditTextPreference notifBeforeTime;
     private Preference changePassword;
+    private Preference logout;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -34,6 +42,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         deleteDb = findPreference(getString(R.string.delete_db_key));
         enableNotif = findPreference(getString(R.string.enable_notif_key));
         changePassword = findPreference(getString(R.string.change_pass_key));
+        logout = findPreference(getString(R.string.logout_key));
 
         showIntro.setOnPreferenceClickListener((preference) ->{
             SharedPreferences preferences = getActivity().getSharedPreferences(getString(R.string.shared_prefs), Context.MODE_PRIVATE);
@@ -65,6 +74,19 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         changePassword.setOnPreferenceClickListener(preference -> {
             new ChangePasswordDialog(this.getActivity()).show();
+            return true;
+        });
+        logout.setOnPreferenceClickListener(preference ->{
+            Log.d("CarParking", "logout");
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(getActivity(), LoginRegistrationActivity.class);
+            intent.putExtra(Const.LOGIN_REG_REC_MODE, LoginRegistrationActivity.Mode.LOGIN);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ParkManager.getInstance(getActivity()).reset(getActivity());
+            startActivity(intent);
+            getActivity().finish();
             return true;
         });
     }

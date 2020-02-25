@@ -26,6 +26,10 @@
         <Preference
             android:key="@string/change_pass_key"
             android:title="Cambia password"/>
+
+        <Preference
+            android:key="@string/logout_key"
+            android:title="@string/logout_title"/>
     </PreferenceCategory>
 
 

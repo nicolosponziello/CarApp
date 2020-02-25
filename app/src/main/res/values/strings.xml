@@ -73,6 +73,8 @@
     <string name="account_pref_group">Account</string>
     <string name="change_pass_key">change_pass</string>
     <string name="confirm_dialog">Conferma</string>
+    <string name="logout_key">logout_key</string>
+    <string name="logout_title">Logout</string>
 
 
     <!-- Notification -->
