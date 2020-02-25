@@ -1,6 +1,10 @@
 package com.nicolosponziello.carparking.activity;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -8,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.nicolosponziello.carparking.R;
@@ -19,6 +24,9 @@ import com.nicolosponziello.carparking.model.ParkManager;
  */
 public class HistoryActivity extends AppCompatActivity {
 
+    private static final int FINE_LOCATION_PERMISSION = 1;
+    private static final int EXTERNAL_STORAGE_PERMISSION = 2;
+    private static final int ALL_PERMISSIONS = 3;
     private RecyclerView recyclerView;
     private ParkingDataAdapter adapter;
     private TextView noDataView;
@@ -71,11 +79,11 @@ public class HistoryActivity extends AppCompatActivity {
     /**
      * imposta la view
      */
-    private void setupView(){
-        if(adapter.getItemCount() == 0){
+    private void setupView() {
+        if (adapter.getItemCount() == 0) {
             noDataView.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
-        }else{
+        } else {
             noDataView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
         }

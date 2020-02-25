@@ -6,20 +6,13 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.nicolosponziello.carparking.MainActivity;
 import com.nicolosponziello.carparking.activity.LoginRegistrationActivity;
 import com.nicolosponziello.carparking.model.ParkManager;
@@ -27,14 +20,7 @@ import com.nicolosponziello.carparking.model.ParkingData;
 import com.nicolosponziello.carparking.util.Callback;
 import com.nicolosponziello.carparking.util.DataLoadingCallback;
 import com.nicolosponziello.carparking.util.Utils;
-
 import java.io.File;
-import java.io.FileFilter;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.List;
-
-import io.grpc.okhttp.internal.Util;
 
 public class FirebaseHandler {
 
@@ -71,12 +57,10 @@ public class FirebaseHandler {
             if(task.isSuccessful()){
                 //l'utente è stato registrato con successo
                 getData(new DataLoadingCallback(activity));
-
-               activity.finish();
             }else{
                 Toast.makeText(activity, "Errore durante il login. Riprovare", Toast.LENGTH_SHORT).show();
+                activity.stopLoadingAnimation();
             }
-            activity.stopLoadingAnimation();
         });
     }
 
@@ -171,6 +155,11 @@ public class FirebaseHandler {
                                 firebaseStorage.getReference(path).getFile(f).addOnCompleteListener(task -> {
                                     if (t.isSuccessful()) {
                                         Log.d("CarParking", "Photo " + path + " downloaded");
+                                        if(data.getPhotoPath().indexOf(path) == data.getPhotoPath().size() -1){
+                                            if(callback != null) {
+                                                callback.onSuccess();
+                                            }
+                                        }
                                     } else {
                                         Log.d("CarParking", "Error downloading photo");
                                     }
@@ -178,12 +167,16 @@ public class FirebaseHandler {
 
                             }else{
                                 Log.d("CarParking", "Image already downloaded");
+                                if(callback != null) {
+                                    callback.onSuccess();
+                                }
                             }
                         }
+                    }else{
+                        if(callback != null) {
+                            callback.onSuccess();
+                        }
                     }
-                }
-                if(callback != null) {
-                    callback.onSuccess();
                 }
             }else{
                 if(callback != null) {
@@ -191,9 +184,5 @@ public class FirebaseHandler {
                 }
             }
         });
-    }
-
-    public StorageReference getImageStorageReference(String path){
-        return firebaseStorage.getReference(path);
     }
 }

@@ -17,7 +17,6 @@ import com.nicolosponziello.carparking.activity.LoginRegistrationActivity;
 import com.nicolosponziello.carparking.database.FirebaseHandler;
 public class LoginFragment extends Fragment {
 
-    private FirebaseAuth firebaseAuth;
     private Button loginBtn;
     private EditText mailInput, passInput;
 
@@ -31,9 +30,6 @@ public class LoginFragment extends Fragment {
         passInput = view.findViewById(R.id.passwordLoginInput);
 
         loginBtn.setClickable(false);
-
-
-        firebaseAuth = FirebaseAuth.getInstance();
 
         TextWatcher textWatcher = new TextWatcher() {
             @Override
