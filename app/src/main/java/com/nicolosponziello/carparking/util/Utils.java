@@ -1,11 +1,12 @@
 package com.nicolosponziello.carparking.util;
 
+import android.content.Context;
+import android.media.Image;
 import android.net.Uri;
-import android.util.Log;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.storage.StorageReference;
 import com.nicolosponziello.carparking.model.ParkingData;
 
 import java.sql.Array;
@@ -83,5 +84,14 @@ public class Utils {
 
     public static boolean isUserLogged(){
         return FirebaseAuth.getInstance().getCurrentUser() != null;
+    }
+
+    public static String extractPhotoname(String path){
+        String[] tmp = path.split("/");
+        String name = tmp[tmp.length - 1];
+        if(name.indexOf('.') > 0){
+            name = name.substring(0, name.indexOf('.'));
+        }
+        return name;
     }
 }
