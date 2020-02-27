@@ -1,6 +1,7 @@
 package com.nicolosponziello.carparking.fragments;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.card.MaterialCardView;
 import com.nicolosponziello.carparking.MainActivity;
@@ -31,6 +33,7 @@ import java.util.Date;
  */
 public class CurrentParkingFragment extends Fragment {
 
+    private static final int FINE_LOCATION_PERMISSION = 99;
     private MaterialCardView card;
     private ParkingData parkingData;
     private TextView cityLabel, addressLabel, dateLabel;
@@ -75,10 +78,14 @@ public class CurrentParkingFragment extends Fragment {
 
 
         card.setOnClickListener(v -> {
-            //apri i dettagli
-            Intent intent = new Intent(getActivity(), DetailActivity.class);
-            intent.putExtra(Const.DETAIL_EXTRA, parkingData.getId());
-            startActivity(intent);
+            if(hasLocationPermissions()) {
+                //apri i dettagli
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                intent.putExtra(Const.DETAIL_EXTRA, parkingData.getId());
+                startActivity(intent);
+            }else{
+                requesLocationPermissions();
+            }
         });
 
         goBtn.setOnClickListener(v -> {
@@ -106,8 +113,34 @@ public class CurrentParkingFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == FINE_LOCATION_PERMISSION){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d("test", "permission ok");
+                //apri i dettagli
+                Intent intent = new Intent(getContext(), DetailActivity.class);
+                intent.putExtra(Const.DETAIL_EXTRA, parkingData.getId());
+                startActivity(intent);
+            }
+        }
+    }
+
+    /**
+     * controlla che l'utente abbia dato i permessi di localizzazione all'applicazione
+     * @return true se concessi, false altrimenti
+     */
+    private boolean hasLocationPermissions(){
+        if(ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * richiede il permesso per la localizzazione FINE (più precisa di COARSE)
+     */
+    private void requesLocationPermissions(){
+        requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, FINE_LOCATION_PERMISSION);
     }
 }

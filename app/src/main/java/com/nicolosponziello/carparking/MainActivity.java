@@ -122,12 +122,6 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        /*SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.shared_prefs), Context.MODE_PRIVATE);
-        boolean introShown = sharedPreferences.getBoolean(getString(R.string.intro_shown), false);
-        //se l'intro non è mai stata mostrata (es. primo avvio) mostra l'activity
-        if(!introShown){
-            startActivity(new Intent(this, IntroActivity.class));
-        }*/
 
         fabNewButton.setOnClickListener((v -> {
             //se l'app non ha i permessi di localizzazione, chiedili prima di attivate l'intent

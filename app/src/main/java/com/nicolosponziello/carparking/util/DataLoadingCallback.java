@@ -18,10 +18,17 @@ public class DataLoadingCallback implements Callback {
     public void onSuccess() {
         Intent intent = new Intent(context, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         if(context instanceof LoginRegistrationActivity){
-            ((LoginRegistrationActivity) context).stopLoadingAnimation();
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            ((LoginRegistrationActivity) context).finish();
+            //((LoginRegistrationActivity) context).stopLoadingAnimation();
+            ((LoginRegistrationActivity) context).finishAffinity();
+
         }
         context.startActivity(intent);
+
+
     }
 
     @Override

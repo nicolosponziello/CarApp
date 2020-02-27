@@ -12,8 +12,10 @@ import com.nicolosponziello.carparking.model.ParkingData;
 import java.sql.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -93,5 +95,11 @@ public class Utils {
             name = name.substring(0, name.indexOf('.'));
         }
         return name;
+    }
+
+    public static <T> List<T> getListFromIterator(Iterator<T> iterator){
+        List<T> res = new ArrayList<>();
+        iterator.forEachRemaining(res::add);
+        return res;
     }
 }
