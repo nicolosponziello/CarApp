@@ -9,7 +9,8 @@
         <SwitchPreference
             android:key="@string/enable_notif_key"
             android:summary="@string/enable_notif_desc"
-            android:title="@string/enable_notif_title" />
+            android:title="@string/enable_notif_title"
+            android:defaultValue="true"/>
         <EditTextPreference
             android:defaultValue="0"
             android:key="@string/notif_key"
