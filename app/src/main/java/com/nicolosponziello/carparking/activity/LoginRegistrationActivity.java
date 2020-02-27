@@ -97,9 +97,11 @@ public class LoginRegistrationActivity extends AppCompatActivity {
 
     public void showLoadingAnimation(){
         this.animationOverlay.setVisibility(View.VISIBLE);
+        changeLoginReg.setVisibility(View.GONE);
     }
     public void stopLoadingAnimation(){
         this.animationOverlay.setVisibility(View.GONE);
+        changeLoginReg.setVisibility(View.VISIBLE);
     }
 
 
