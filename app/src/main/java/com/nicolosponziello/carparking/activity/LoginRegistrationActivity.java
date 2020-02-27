@@ -40,13 +40,6 @@ public class LoginRegistrationActivity extends AppCompatActivity {
         loadingAnimation = findViewById(R.id.spinAnimation);
         animationOverlay = findViewById(R.id.animationOverlay);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.shared_prefs), Context.MODE_PRIVATE);
-        boolean introShown = sharedPreferences.getBoolean(getString(R.string.intro_shown), false);
-        //se l'intro non è mai stata mostrata (es. primo avvio) mostra l'activity
-        if(!introShown){
-            startActivity(new Intent(this, IntroActivity.class));
-        }
-
         //setup animazione caricamento
         WanderingCubes cubes = new WanderingCubes();
         loadingAnimation.setIndeterminateDrawable(cubes);

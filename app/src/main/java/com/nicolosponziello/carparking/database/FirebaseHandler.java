@@ -21,6 +21,7 @@ import com.nicolosponziello.carparking.util.Callback;
 import com.nicolosponziello.carparking.util.DataLoadingCallback;
 import com.nicolosponziello.carparking.util.Utils;
 import java.io.File;
+import java.util.List;
 
 public class FirebaseHandler {
 
@@ -57,6 +58,7 @@ public class FirebaseHandler {
             if(task.isSuccessful()){
                 //l'utente è stato registrato con successo
                 getData(new DataLoadingCallback(activity));
+                activity.showLoadingAnimation();
             }else{
                 Toast.makeText(activity, "Errore durante il login. Riprovare", Toast.LENGTH_SHORT).show();
                 activity.stopLoadingAnimation();
@@ -139,7 +141,8 @@ public class FirebaseHandler {
         CollectionReference userCollection = firestore.collection(firebaseAuth.getCurrentUser().getUid());
         userCollection.get().addOnCompleteListener(t -> {
             if(t.isSuccessful()){
-                for(QueryDocumentSnapshot document : t.getResult()){
+                List<QueryDocumentSnapshot> documentSnapshotList = Utils.getListFromIterator(t.getResult().iterator());
+                for(QueryDocumentSnapshot document : documentSnapshotList){
                     Log.d("store", firebaseAuth.getCurrentUser().getEmail() + " - " + document.getData().toString());
                     ParkingData data = Utils.buildParkingData(document);
                     ParkManager.getInstance(context).completeAddData(data);
@@ -153,9 +156,11 @@ public class FirebaseHandler {
                                         dir,
                                         filename);
                                 firebaseStorage.getReference(path).getFile(f).addOnCompleteListener(task -> {
-                                    if (t.isSuccessful()) {
-                                        Log.d("CarParking", "Photo " + path + " downloaded");
-                                        if(data.getPhotoPath().indexOf(path) == data.getPhotoPath().size() -1){
+                                    if (task.isSuccessful()) {
+                                        Log.d("CarParking", "Photo " + data.getPhotoPath().indexOf(path) + " - " + path + " downloaded");
+                                        if((documentSnapshotList.indexOf(document) == documentSnapshotList.size()-1) &&
+                                                data.getPhotoPath().indexOf(path) == data.getPhotoPath().size() -1){
+                                            Log.d("CarParking", "Last downloaded calling callback");
                                             if(callback != null) {
                                                 callback.onSuccess();
                                             }
@@ -167,15 +172,27 @@ public class FirebaseHandler {
 
                             }else{
                                 Log.d("CarParking", "Image already downloaded");
-                                if(callback != null) {
-                                    callback.onSuccess();
+                                if((documentSnapshotList.indexOf(document) == documentSnapshotList.size()-1) &&
+                                        data.getPhotoPath().indexOf(path) == data.getPhotoPath().size() -1) {
+                                    if (callback != null) {
+                                        Log.d("CarParking", "Callback");
+                                        callback.onSuccess();
+                                    }
                                 }
                             }
                         }
-                    }else{
-                        if(callback != null) {
-                            callback.onSuccess();
+                    }else {
+                        if(!(documentSnapshotList.indexOf(document) == documentSnapshotList.size()-1)){
+                            if (callback != null) {
+                                callback.onSuccess();
+                            }
                         }
+                    }
+                }
+                if(documentSnapshotList.size() == 0){
+                    if(callback != null){
+                        Log.d("CarParking", "no data to load");
+                        callback.onSuccess();
                     }
                 }
             }else{

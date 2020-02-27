@@ -67,7 +67,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             return true;
         });
 
-
         notifBeforeTime.setEnabled(enableNotif.isChecked());
 
         getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this::OnSharedPreferenceChangeListener);
